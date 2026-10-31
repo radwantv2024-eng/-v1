@@ -1,0 +1,2066 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+<title>مصروف البيت</title>
+<meta name="description" content="دفتر مصاريف البيت الشهري" />
+<link rel="manifest" href="manifest.json" />
+<link rel="icon" href="icon-192.png" type="image/png" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="مصروف البيت" />
+<meta name="theme-color" content="#0E2B22" />
+<meta name="mobile-web-app-capable" content="yes" />
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.26.4/babel.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+html, body { margin: 0; padding: 0; background: #0E2B22; }
+#root { min-height: 100vh; }
+* { box-sizing: border-box; }
+.absolute { position:absolute; }
+.duration-500 { transition-duration:500ms; }
+.fixed { position:fixed; }
+.flex { display:flex; }
+.flex-1 { flex:1 1 0%; }
+.flex-col { flex-direction:column; }
+.flex-wrap { flex-wrap:wrap; }
+.font-semibold { font-weight:600; }
+.gap-1 { gap:0.25rem; }
+.gap-1\.5 { gap:0.375rem; }
+.gap-2 { gap:0.5rem; }
+.gap-2\.5 { gap:0.625rem; }
+.gap-3 { gap:0.75rem; }
+.grid { display:grid; }
+.grid-cols-2 { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.grid-cols-3 { grid-template-columns:repeat(3,minmax(0,1fr)); }
+.h-1\.5 { height:0.375rem; }
+.h-7 { height:1.75rem; }
+.h-8 { height:2rem; }
+.h-9 { height:2.25rem; }
+.h-full { height:100%; }
+.inset-0 { top:0;right:0;bottom:0;left:0; }
+.inset-x-0 { left:0;right:0; }
+.items-center { align-items:center; }
+.items-end { align-items:flex-end; }
+.items-start { align-items:flex-start; }
+.justify-between { justify-content:space-between; }
+.justify-center { justify-content:center; }
+.leading-tight { line-height:1.25; }
+.max-w-md { max-width:28rem; }
+.max-w-xs { max-width:20rem; }
+.mb-1 { margin-bottom:0.25rem; }
+.mb-1\.5 { margin-bottom:0.375rem; }
+.mb-2 { margin-bottom:0.5rem; }
+.mb-3 { margin-bottom:0.75rem; }
+.mb-4 { margin-bottom:1rem; }
+.mb-5 { margin-bottom:1.25rem; }
+.mb-6 { margin-bottom:1.5rem; }
+.mb-7 { margin-bottom:1.75rem; }
+.min-h-screen { min-height:100vh; }
+.min-w-0 { min-width:0px; }
+.mt-0\.5 { margin-top:0.125rem; }
+.mt-1 { margin-top:0.25rem; }
+.mt-2 { margin-top:0.5rem; }
+.mx-auto { margin-left:auto;margin-right:auto; }
+.outline-none { outline:2px solid transparent;outline-offset:2px; }
+.overflow-hidden { overflow:hidden; }
+.p-1 { padding:0.25rem; }
+.p-1\.5 { padding:0.375rem; }
+.p-2 { padding:0.5rem; }
+.p-3 { padding:0.75rem; }
+.p-3\.5 { padding:0.875rem; }
+.p-4 { padding:1rem; }
+.p-5 { padding:1.25rem; }
+.p-6 { padding:1.5rem; }
+.pointer-events-none { pointer-events:none; }
+.pt-1\.5 { padding-top:0.375rem; }
+.pb-1 { padding-bottom:0.25rem; }
+.pt-3 { padding-top:0.75rem; }
+.py-4 { padding-top:1rem;padding-bottom:1rem; }
+.px-2 { padding-left:0.5rem;padding-right:0.5rem; }
+.px-2\.5 { padding-left:0.625rem;padding-right:0.625rem; }
+.px-3 { padding-left:0.75rem;padding-right:0.75rem; }
+.px-3\.5 { padding-left:0.875rem;padding-right:0.875rem; }
+.px-4 { padding-left:1rem;padding-right:1rem; }
+.px-5 { padding-left:1.25rem;padding-right:1.25rem; }
+.py-0\.5 { padding-top:0.125rem;padding-bottom:0.125rem; }
+.py-1\.5 { padding-top:0.375rem;padding-bottom:0.375rem; }
+.py-2 { padding-top:0.5rem;padding-bottom:0.5rem; }
+.py-2\.5 { padding-top:0.625rem;padding-bottom:0.625rem; }
+.py-3 { padding-top:0.75rem;padding-bottom:0.75rem; }
+.py-7 { padding-top:1.75rem;padding-bottom:1.75rem; }
+.relative { position:relative; }
+.rounded-2xl { border-radius:1rem; }
+.rounded-full { border-radius:9999px; }
+.rounded-lg { border-radius:0.5rem; }
+.rounded-t-3xl { border-top-left-radius:1.5rem;border-top-right-radius:1.5rem; }
+.rounded-xl { border-radius:0.75rem; }
+.shrink-0 { flex-shrink:0; }
+.tabular-nums { font-variant-numeric:tabular-nums; }
+.text-2xl { font-size:1.5rem;line-height:2rem; }
+.text-center { text-align:center; }
+.text-right { text-align:right; }
+.transition-all { transition-property:all;transition-timing-function:cubic-bezier(0.4,0,0.2,1);transition-duration:150ms; }
+.transition-colors { transition-property:color,background-color,border-color;transition-timing-function:cubic-bezier(0.4,0,0.2,1);transition-duration:150ms; }
+.truncate { overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
+.w-7 { width:1.75rem; }
+.w-8 { width:2rem; }
+.w-9 { width:2.25rem; }
+.w-full { width:100%; }
+.z-50 { z-index:50; }
+@media (min-width:640px) {
+  .sm\:grid-cols-4 { grid-template-columns:repeat(4,minmax(0,1fr)); }
+  .sm\:items-center { align-items:center; }
+  .sm\:max-w-sm { max-width:24rem; }
+  .sm\:rounded-2xl { border-radius:1rem; }
+}
+</style>
+</head>
+<body>
+<div id="root">
+  <div id="fallback-msg" style="min-height:100vh;display:flex;align-items:center;justify-content:center;color:#8FA396;font-family:sans-serif;font-size:14px;text-align:center;padding:24px;line-height:1.8;">جاري التحميل...</div>
+</div>
+<script>
+  window.__appErrors = [];
+  window.addEventListener('error', function (e) { window.__appErrors.push((e.message || String(e.error || e))); });
+  setTimeout(function () {
+    if (window.__appMounted) return;
+    var el = document.getElementById('fallback-msg');
+    if (!el) return;
+    el.textContent = window.__appErrors.length ? ('صار خطأ بالتحميل: ' + window.__appErrors.join(' | ')) : 'التطبيق ما قدر يتحمّل — تأكد من اتصال الإنترنت وجرب تفتح الملف بمتصفح عادي مباشرة.';
+  }, 6000);
+</script>
+<script type="text/babel" data-presets="react">
+const { useState, useEffect, useRef } = React;
+
+function makeIconShim(glyph, isEmoji) {
+  return function IconShim({ size, style }) {
+    const color = style && style.color;
+    return React.createElement(
+      'span',
+      { style: { fontSize: size, lineHeight: 1, color: isEmoji ? undefined : color } },
+      glyph
+    );
+  };
+}
+const Home = makeIconShim('🏠', true);
+const UtensilsCrossed = makeIconShim('🍽️', true);
+const ChefHat = makeIconShim('🍳', true);
+const Package = makeIconShim('📦', true);
+const Gamepad2 = makeIconShim('🎮', true);
+const Receipt = makeIconShim('🧾', true);
+const Car = makeIconShim('🚗', true);
+const Trash2 = makeIconShim('🗑', true);
+const Plus = makeIconShim('+', false);
+const RotateCcw = makeIconShim('↺', false);
+const X = makeIconShim('✕', false);
+const Download = makeIconShim('⬇', false);
+const Settings = makeIconShim('⚙', false);
+const Calendar = makeIconShim('📅', false);
+const HandCoins = makeIconShim('💰', true);
+
+const STORAGE_KEY = 'household-expenses-data';
+
+function loadInitial() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const p = JSON.parse(raw);
+      return {
+        expenses: Array.isArray(p.expenses) ? p.expenses : [],
+        customCategories: Array.isArray(p.customCategories) ? p.customCategories : [],
+        customPersons: Array.isArray(p.customPersons) ? p.customPersons : [],
+        hiddenCategoryIds: Array.isArray(p.hiddenCategoryIds) ? p.hiddenCategoryIds : [],
+        hiddenPersonIds: Array.isArray(p.hiddenPersonIds) ? p.hiddenPersonIds : [],
+        deposits: Array.isArray(p.deposits) ? p.deposits : [],
+        resetHistory: Array.isArray(p.resetHistory) ? p.resetHistory : [],
+        personLimits: p.personLimits && typeof p.personLimits === 'object' ? p.personLimits : {},
+      };
+    }
+  } catch (e) {}
+  return { expenses: [], customCategories: [], customPersons: [], hiddenCategoryIds: [], hiddenPersonIds: [], deposits: [], resetHistory: [], personLimits: {} };
+}
+
+function persistAll(payload) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+const BUILTIN_CATEGORIES = [
+  { id: 'household', label: 'أدوات منزلية', icon: Home, color: '#6E93B0' },
+  { id: 'food', label: 'طعام', icon: UtensilsCrossed, color: '#E0A458' },
+  { id: 'kitchen', label: 'حاجات مطبخ', icon: ChefHat, color: '#C97D5D' },
+  { id: 'entertainment', label: 'ترفيه', icon: Gamepad2, color: '#5B9E96' },
+  { id: 'homecosts', label: 'منزل', icon: Receipt, color: '#B8A369' },
+  { id: 'car', label: 'سيارة', icon: Car, color: '#8B95A1' },
+  { id: 'other', label: 'أخرى', icon: Package, color: '#9B7EA3' },
+];
+
+const BUILTIN_PERSON_TAGS = [
+  { id: 'radwan', label: 'الزوج', letter: 'ز', color: '#5FA8D3' },
+  { id: 'ghadeer', label: 'الزوجة', letter: 'ة', color: '#D98FA0' },
+  { id: 'home', label: 'منزل', letter: 'م', color: '#A3B86C' },
+  { id: 'gifts', label: 'هدايا', letter: 'ه', color: '#C87FB0' },
+];
+
+const CUSTOM_COLOR_PALETTE = ['#5FA8D3', '#4FBDAE', '#D98FA0', '#A3B86C', '#C87FB0', '#C9A876', '#8B95A1', '#E0A458'];
+
+const OTHER_CATEGORY = BUILTIN_CATEGORIES.find((c) => c.id === 'other');
+const HOME_PERSON = BUILTIN_PERSON_TAGS.find((p) => p.id === 'home');
+
+const LEVANT_MONTHS = [
+  'كانون الثاني', 'شباط', 'آذار', 'نيسان', 'أيار', 'حزيران',
+  'تموز', 'آب', 'أيلول', 'تشرين الأول', 'تشرين الثاني', 'كانون الأول',
+];
+
+const CURRENCY = '₪';
+
+const COLORS = {
+  bg: '#0E2B22',
+  surface: '#153A2E',
+  surfaceBorder: 'rgba(201,162,39,0.16)',
+  gold: '#C9A227',
+  textPrimary: '#F3EDE0',
+  textMuted: '#8FA396',
+  textFaint: '#5C6E63',
+  danger: '#B0524F',
+};
+
+function getTodayStr() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
+function getCurrentMonthKey() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+}
+
+function getDateOffset(daysAgo) {
+  const d = new Date();
+  d.setDate(d.getDate() - daysAgo);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
+function formatAmount(num) {
+  const rounded = Math.round((num + Number.EPSILON) * 100) / 100;
+  return rounded % 1 === 0 ? String(rounded) : rounded.toFixed(2);
+}
+
+function formatDate(dateStr) {
+  const bits = dateStr.split('-').map(Number);
+  return `${bits[2]} ${LEVANT_MONTHS[bits[1] - 1]}`;
+}
+
+function getMonthKey(dateStr) {
+  return dateStr.slice(0, 7);
+}
+
+function formatMonthKey(key) {
+  const bits = key.split('-').map(Number);
+  return `${LEVANT_MONTHS[bits[1] - 1]} ${bits[0]}`;
+}
+
+function getMonthBounds(monthKey) {
+  const bits = monthKey.split('-').map(Number);
+  const y = bits[0];
+  const m = bits[1];
+  const first = `${monthKey}-01`;
+  const lastDay = new Date(y, m, 0).getDate();
+  const last = `${monthKey}-${String(lastDay).padStart(2, '0')}`;
+  return { first, last };
+}
+
+function describeRange(from, to) {
+  if (!from || !to) return '';
+  const monthKey = from.slice(0, 7);
+  const bounds = getMonthBounds(monthKey);
+  if (from === bounds.first && to === bounds.last) return formatMonthKey(monthKey);
+  return `${formatDate(from)} — ${formatDate(to)}`;
+}
+
+function escapeHtml(str) {
+  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function getPersonId(expense) {
+  return expense.person || 'home';
+}
+
+function buildRingGradient(data, total) {
+  if (total <= 0 || data.length === 0) {
+    return `repeating-conic-gradient(from 0deg, ${COLORS.gold} 0deg 2.4deg, #7d631c 2.4deg 4.8deg)`;
+  }
+  let cumulative = 0;
+  const stops = data.map((d) => {
+    const start = (cumulative / total) * 360;
+    cumulative += d.value;
+    const end = (cumulative / total) * 360;
+    return `${d.color} ${start}deg ${end}deg`;
+  });
+  return `conic-gradient(${stops.join(', ')})`;
+}
+
+function useCountUp(value, duration = 650) {
+  const [display, setDisplay] = useState(value);
+  const prevValue = useRef(value);
+  const rafRef = useRef(null);
+
+  useEffect(() => {
+    const prefersReduced =
+      typeof window !== 'undefined' &&
+      window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (prefersReduced) {
+      setDisplay(value);
+      prevValue.current = value;
+      return undefined;
+    }
+
+    const start = prevValue.current;
+    const end = value;
+    const startTime = performance.now();
+    cancelAnimationFrame(rafRef.current);
+
+    function tick(now) {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setDisplay(start + (end - start) * eased);
+      if (progress < 1) {
+        rafRef.current = requestAnimationFrame(tick);
+      } else {
+        prevValue.current = end;
+        setDisplay(end);
+      }
+    }
+    rafRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, [value, duration]);
+
+  return display;
+}
+
+function CategoryGlyph({ cat, size }) {
+  if (cat.icon) {
+    const Icon = cat.icon;
+    return <Icon size={size} style={{ color: cat.color }} />;
+  }
+  return (
+    <span style={{ color: cat.color || COLORS.gold, fontFamily: "'Cairo', sans-serif", fontSize: Math.max(size - 2, 10), fontWeight: 700 }}>
+      {cat.label[0]}
+    </span>
+  );
+}
+
+function ColorSwatchPicker({ value, onChange }) {
+  return (
+    <div className="flex gap-2 flex-wrap mb-5">
+      {CUSTOM_COLOR_PALETTE.map((c) => (
+        <button
+          key={c}
+          type="button"
+          onClick={() => onChange(c)}
+          aria-label={`اختيار اللون ${c}`}
+          style={{ width: 28, height: 28, borderRadius: '50%', background: c, border: value === c ? `2px solid ${COLORS.textPrimary}` : '2px solid transparent' }}
+        />
+      ))}
+    </div>
+  );
+}
+
+function useLongPress(onLongPress, onClick, enabled, ms = 550) {
+  const [pressing, setPressing] = useState(false);
+  const timerRef = useRef(null);
+  const firedRef = useRef(false);
+
+  const start = () => {
+    if (!enabled) return;
+    firedRef.current = false;
+    setPressing(true);
+    timerRef.current = setTimeout(() => {
+      firedRef.current = true;
+      setPressing(false);
+      onLongPress();
+    }, ms);
+  };
+  const clear = () => {
+    setPressing(false);
+    if (timerRef.current) clearTimeout(timerRef.current);
+  };
+  const handleClick = () => {
+    if (firedRef.current) {
+      firedRef.current = false;
+      return;
+    }
+    onClick();
+  };
+
+  return {
+    pressing,
+    onMouseDown: start,
+    onMouseUp: clear,
+    onMouseLeave: clear,
+    onTouchStart: start,
+    onTouchEnd: clear,
+    onTouchCancel: clear,
+    onClick: handleClick,
+    onContextMenu: (e) => enabled && e.preventDefault(),
+  };
+}
+
+function CategoryChip({ cat, active, deletable, onSelect, onDelete }) {
+  const { pressing, ...handlers } = useLongPress(onDelete, onSelect, deletable);
+  return (
+    <button
+      type="button"
+      {...handlers}
+      className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl"
+      style={{
+        background: active ? cat.color : 'rgba(255,255,255,0.04)',
+        color: active ? COLORS.bg : COLORS.textMuted,
+        border: `1px solid ${pressing ? COLORS.danger : active ? cat.color : 'rgba(255,255,255,0.08)'}`,
+        boxShadow: pressing ? `0 0 0 2px ${COLORS.danger}` : 'none',
+        fontFamily: "'Cairo', sans-serif",
+        fontSize: 12,
+        fontWeight: active ? 700 : 400,
+        transition: 'box-shadow 0.15s, border-color 0.15s',
+        userSelect: 'none',
+        WebkitUserSelect: 'none',
+      }}
+    >
+      <CategoryGlyph cat={cat} size={13} />
+      {cat.label}
+    </button>
+  );
+}
+
+function PersonChip({ p, active, deletable, onSelect, onDelete }) {
+  const { pressing, ...handlers } = useLongPress(onDelete, onSelect, deletable);
+  return (
+    <button
+      type="button"
+      {...handlers}
+      className="px-3 py-1.5 rounded-xl"
+      style={{
+        background: active ? p.color : 'rgba(255,255,255,0.04)',
+        color: active ? COLORS.bg : COLORS.textMuted,
+        border: `1px solid ${pressing ? COLORS.danger : active ? p.color : 'rgba(255,255,255,0.08)'}`,
+        boxShadow: pressing ? `0 0 0 2px ${COLORS.danger}` : 'none',
+        fontFamily: "'Cairo', sans-serif",
+        fontSize: 12,
+        fontWeight: active ? 700 : 400,
+        transition: 'box-shadow 0.15s, border-color 0.15s',
+        userSelect: 'none',
+        WebkitUserSelect: 'none',
+      }}
+    >
+      {p.label}
+    </button>
+  );
+}
+
+function DateRangeFields({ from, to, onFrom, onTo }) {
+  return (
+    <div className="flex gap-2.5 mb-3">
+      <div className="flex-1">
+        <div style={{ color: COLORS.textMuted, fontFamily: "'Cairo', sans-serif", fontSize: 11, marginBottom: 4 }}>من</div>
+        <input
+          type="date"
+          dir="ltr"
+          value={from}
+          onChange={(e) => onFrom(e.target.value)}
+          className="w-full px-3 py-2 rounded-xl text-right outline-none"
+          style={{ background: 'rgba(255,255,255,0.04)', color: COLORS.textPrimary, border: '1px solid rgba(255,255,255,0.08)', fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, colorScheme: 'dark' }}
+        />
+      </div>
+      <div className="flex-1">
+        <div style={{ color: COLORS.textMuted, fontFamily: "'Cairo', sans-serif", fontSize: 11, marginBottom: 4 }}>إلى</div>
+        <input
+          type="date"
+          dir="ltr"
+          value={to}
+          onChange={(e) => onTo(e.target.value)}
+          className="w-full px-3 py-2 rounded-xl text-right outline-none"
+          style={{ background: 'rgba(255,255,255,0.04)', color: COLORS.textPrimary, border: '1px solid rgba(255,255,255,0.08)', fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, colorScheme: 'dark' }}
+        />
+      </div>
+    </div>
+  );
+}
+
+function HouseholdExpenses() {
+  const [expenses, setExpenses] = useState(() => loadInitial().expenses);
+  const [customCategories, setCustomCategories] = useState(() => loadInitial().customCategories);
+  const [customPersons, setCustomPersons] = useState(() => loadInitial().customPersons);
+  const [hiddenCategoryIds, setHiddenCategoryIds] = useState(() => loadInitial().hiddenCategoryIds);
+  const [hiddenPersonIds, setHiddenPersonIds] = useState(() => loadInitial().hiddenPersonIds);
+  const [personLimits, setPersonLimits] = useState(() => loadInitial().personLimits);
+  const [deposits, setDeposits] = useState(() => loadInitial().deposits);
+  const [resetHistory, setResetHistory] = useState(() => loadInitial().resetHistory);
+  const [showDepositsModal, setShowDepositsModal] = useState(false);
+  const [depositAmount, setDepositAmount] = useState('');
+  const [depositDate, setDepositDate] = useState(getTodayStr());
+  const [depositNote, setDepositNote] = useState('');
+
+  const [name, setName] = useState('');
+  const [category, setCategory] = useState('food');
+  const [person, setPerson] = useState('home');
+  const [amount, setAmount] = useState('');
+  const [date, setDate] = useState(getTodayStr());
+
+  const [showResetConfirm, setShowResetConfirm] = useState(false);
+
+  const [saveError, setSaveError] = useState(false);
+  const [exportError, setExportError] = useState(false);
+  const [breakdownView, setBreakdownView] = useState('type');
+  const [showExportModal, setShowExportModal] = useState(false);
+  const [exportFormat, setExportFormat] = useState('excel');
+  const [exportScope, setExportScope] = useState('all');
+  const [exportFrom, setExportFrom] = useState(() => getMonthBounds(getCurrentMonthKey()).first);
+  const [exportTo, setExportTo] = useState(() => getMonthBounds(getCurrentMonthKey()).last);
+
+  const [detailView, setDetailView] = useState(null);
+  const [historyViewId, setHistoryViewId] = useState(null);
+  const [showAddCategory, setShowAddCategory] = useState(false);
+  const [newCatName, setNewCatName] = useState('');
+  const [newCatColor, setNewCatColor] = useState(CUSTOM_COLOR_PALETTE[0]);
+  const [showAddPerson, setShowAddPerson] = useState(false);
+  const [newPersonName, setNewPersonName] = useState('');
+  const [newPersonColor, setNewPersonColor] = useState(CUSTOM_COLOR_PALETTE[0]);
+  const [showLimitsModal, setShowLimitsModal] = useState(false);
+  const [limitWarning, setLimitWarning] = useState(null);
+  const [deleteTarget, setDeleteTarget] = useState(null);
+  const [deleteItemTarget, setDeleteItemTarget] = useState(null);
+
+  const saveState = (overrides) => {
+    const payload = {
+      expenses: overrides.expenses !== undefined ? overrides.expenses : expenses,
+      customCategories: overrides.customCategories !== undefined ? overrides.customCategories : customCategories,
+      customPersons: overrides.customPersons !== undefined ? overrides.customPersons : customPersons,
+      hiddenCategoryIds: overrides.hiddenCategoryIds !== undefined ? overrides.hiddenCategoryIds : hiddenCategoryIds,
+      hiddenPersonIds: overrides.hiddenPersonIds !== undefined ? overrides.hiddenPersonIds : hiddenPersonIds,
+      deposits: overrides.deposits !== undefined ? overrides.deposits : deposits,
+      resetHistory: overrides.resetHistory !== undefined ? overrides.resetHistory : resetHistory,
+      personLimits: overrides.personLimits !== undefined ? overrides.personLimits : personLimits,
+    };
+    setSaveError(!persistAll(payload));
+  };
+
+  const ALL_CATEGORIES = [
+    ...BUILTIN_CATEGORIES.filter((c) => c.id === 'other' || !hiddenCategoryIds.includes(c.id)),
+    ...customCategories,
+  ];
+  const ALL_PERSON_TAGS = [
+    ...BUILTIN_PERSON_TAGS.filter((p) => p.id === 'home' || !hiddenPersonIds.includes(p.id)),
+    ...customPersons,
+  ];
+  const EXPORT_SCOPES = [{ id: 'all', label: 'الكل' }, ...ALL_PERSON_TAGS.map((p) => ({ id: p.id, label: p.label }))];
+
+  // Active data is everything not yet archived by a manual reset — no calendar-month auto filtering.
+  const activeExpensesTotal = expenses.reduce((s, e) => s + e.amount, 0);
+  const animatedTotal = useCountUp(activeExpensesTotal);
+
+  const activeDatesSorted = expenses.map((e) => e.date).sort();
+  const earliestActiveDate = activeDatesSorted.length > 0 ? activeDatesSorted[0] : null;
+
+  const categoryTotals = ALL_CATEGORIES.reduce((acc, cat) => {
+    acc[cat.id] = expenses.filter((e) => e.category === cat.id).reduce((s, e) => s + e.amount, 0);
+    return acc;
+  }, {});
+
+  const personTotals = ALL_PERSON_TAGS.reduce((acc, p) => {
+    acc[p.id] = expenses.filter((e) => getPersonId(e) === p.id).reduce((s, e) => s + e.amount, 0);
+    return acc;
+  }, {});
+
+  const totalDeposits = deposits.reduce((s, d) => s + d.amount, 0);
+  const netBalance = totalDeposits - activeExpensesTotal;
+
+  const sortByDateDesc = (a, b) => (a.date === b.date ? b.id.localeCompare(a.id) : b.date.localeCompare(a.date));
+  const sortedExpenses = [...expenses].sort(sortByDateDesc);
+  const sortedDeposits = [...deposits].sort(sortByDateDesc);
+
+  const currentMonthKey = getCurrentMonthKey();
+  const currentMonthLabel = formatMonthKey(currentMonthKey);
+
+  const todayStr = getDateOffset(0);
+  const yesterdayStr = getDateOffset(1);
+  const dayBeforeStr = getDateOffset(2);
+  const dayTotal = (dateStr) => expenses.filter((e) => e.date === dateStr).reduce((s, e) => s + e.amount, 0);
+  const RECENT_DAYS = [
+    { label: 'اليوم', date: todayStr },
+    { label: 'أمس', date: yesterdayStr },
+    { label: 'قبل أمس', date: dayBeforeStr },
+  ];
+
+  const CHART_MAX_DAYS = 14;
+  const dailyChartData = [];
+  for (let i = CHART_MAX_DAYS - 1; i >= 0; i--) {
+    const dateStr = getDateOffset(i);
+    dailyChartData.push({ date: dateStr, total: dayTotal(dateStr) });
+  }
+  const shortDate = (ds) => `${parseInt(ds.slice(8, 10), 10)}/${parseInt(ds.slice(5, 7), 10)}`;
+  const chartFirstLabel = shortDate(dailyChartData[0].date);
+  const chartLastLabel = shortDate(dailyChartData[dailyChartData.length - 1].date);
+  const maxDailyTotal = Math.max(1, ...dailyChartData.map((d) => d.total));
+
+  const canAdd = name.trim().length > 0 && !Number.isNaN(parseFloat(amount)) && parseFloat(amount) > 0;
+  const totalStr = formatAmount(animatedTotal);
+  const totalFontSize = totalStr.length > 7 ? 22 : totalStr.length > 5 ? 27 : 34;
+
+  const chartSource =
+    breakdownView === 'type'
+      ? ALL_CATEGORIES.map((c) => ({ id: c.id, name: c.label, value: categoryTotals[c.id] || 0, color: c.color || COLORS.gold }))
+      : ALL_PERSON_TAGS.map((p) => ({ id: p.id, name: p.label, value: personTotals[p.id] || 0, color: p.color || COLORS.gold }));
+  const chartData = chartSource.filter((d) => d.value > 0);
+  const ringGradient = buildRingGradient(chartData, activeExpensesTotal);
+
+  let detailLabel = '';
+  let detailColor = COLORS.gold;
+  let detailIconNode = null;
+  let detailItems = [];
+  if (detailView) {
+    if (detailView.type === 'day') {
+      const dayFormatted = formatDate(detailView.id);
+      detailLabel = detailView.id === todayStr ? `اليوم — ${dayFormatted}` : detailView.id === yesterdayStr ? `أمس — ${dayFormatted}` : dayFormatted;
+      detailItems = [...expenses.filter((e) => e.date === detailView.id)].sort(sortByDateDesc);
+    } else if (detailView.type === 'category') {
+      const cat = ALL_CATEGORIES.find((c) => c.id === detailView.id);
+      if (cat) {
+        detailLabel = cat.label;
+        detailColor = cat.color;
+        detailIconNode = <CategoryGlyph cat={cat} size={16} />;
+      }
+      detailItems = sortedExpenses.filter((e) => e.category === detailView.id);
+    } else if (detailView.type === 'person') {
+      const p = ALL_PERSON_TAGS.find((pt) => pt.id === detailView.id);
+      if (p) {
+        detailLabel = p.label;
+        detailColor = p.color;
+        detailIconNode = <span style={{ color: p.color, fontFamily: "'Cairo', sans-serif", fontSize: 14, fontWeight: 700 }}>{p.letter}</span>;
+      }
+      detailItems = sortedExpenses.filter((e) => getPersonId(e) === detailView.id);
+    }
+  }
+  const detailTotal = detailItems.reduce((s, e) => s + e.amount, 0);
+
+  const exportList = expenses.filter(
+    (e) => e.date >= exportFrom && e.date <= exportTo && (exportScope === 'all' || getPersonId(e) === exportScope)
+  );
+  const exportTotal = exportList.reduce((s, e) => s + e.amount, 0);
+  const exportScopeLabel = (EXPORT_SCOPES.find((s) => s.id === exportScope) || {}).label || 'الكل';
+  const exportRangeLabel = describeRange(exportFrom, exportTo);
+
+  const handleAdd = () => {
+    if (!canAdd) return;
+    const newExpense = {
+      id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+      name: name.trim(),
+      category,
+      person,
+      amount: parseFloat(amount),
+      date: date || getTodayStr(),
+    };
+    const updated = [newExpense, ...expenses];
+    setExpenses(updated);
+    saveState({ expenses: updated });
+
+    const limit = personLimits[person];
+    if (limit) {
+      const personCycleTotal = updated.filter((e) => getPersonId(e) === person).reduce((s, e) => s + e.amount, 0);
+      if (personCycleTotal > limit) {
+        const label = (ALL_PERSON_TAGS.find((p) => p.id === person) || {}).label || person;
+        setLimitWarning(`${label} تجاوز الحد (${formatAmount(limit)} ${CURRENCY}) — الصرف صار ${formatAmount(personCycleTotal)} ${CURRENCY}`);
+      } else {
+        setLimitWarning(null);
+      }
+    }
+
+    setName('');
+    setAmount('');
+    setDate(getTodayStr());
+  };
+
+  const handleDelete = (id) => {
+    const updated = expenses.filter((e) => e.id !== id);
+    setExpenses(updated);
+    saveState({ expenses: updated });
+  };
+
+  const canAddDeposit = !Number.isNaN(parseFloat(depositAmount)) && parseFloat(depositAmount) > 0;
+
+  const handleAddDeposit = () => {
+    if (!canAddDeposit) return;
+    const newDeposit = {
+      id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+      amount: parseFloat(depositAmount),
+      date: depositDate || getTodayStr(),
+      note: depositNote.trim(),
+    };
+    const updated = [newDeposit, ...deposits];
+    setDeposits(updated);
+    saveState({ deposits: updated });
+    setDepositAmount('');
+    setDepositNote('');
+    setDepositDate(getTodayStr());
+  };
+
+  const handleDeleteDeposit = (id) => {
+    const updated = deposits.filter((d) => d.id !== id);
+    setDeposits(updated);
+    saveState({ deposits: updated });
+  };
+
+  const handleReset = () => {
+    if (expenses.length === 0 && deposits.length === 0) {
+      setShowResetConfirm(false);
+      return;
+    }
+    const allDates = [...expenses.map((e) => e.date), ...deposits.map((d) => d.date)].sort();
+    const fromDate = allDates[0] || getTodayStr();
+    const toDate = allDates[allDates.length - 1] || getTodayStr();
+    const entry = {
+      id: `${Date.now()}`,
+      fromDate,
+      toDate,
+      expenseTotal: activeExpensesTotal,
+      depositTotal: totalDeposits,
+      netTotal: totalDeposits - activeExpensesTotal,
+      expenses: expenses.map((e) => ({ ...e })),
+      deposits: deposits.map((d) => ({ ...d })),
+    };
+    const updatedHistory = [entry, ...resetHistory];
+    setResetHistory(updatedHistory);
+    setExpenses([]);
+    setDeposits([]);
+    saveState({ expenses: [], deposits: [], resetHistory: updatedHistory });
+    setShowResetConfirm(false);
+    setDetailView(null);
+  };
+
+  const handleAddCategory = () => {
+    const trimmed = newCatName.trim();
+    if (!trimmed) return;
+    const newCat = { id: `custom-${Date.now()}`, label: trimmed, color: newCatColor };
+    const updated = [...customCategories, newCat];
+    setCustomCategories(updated);
+    saveState({ customCategories: updated });
+    setCategory(newCat.id);
+    setShowAddCategory(false);
+    setNewCatName('');
+    setNewCatColor(CUSTOM_COLOR_PALETTE[0]);
+  };
+
+  const handleAddPerson = () => {
+    const trimmed = newPersonName.trim();
+    if (!trimmed) return;
+    const newP = { id: `custom-${Date.now()}`, label: trimmed, letter: trimmed[0], color: newPersonColor };
+    const updated = [...customPersons, newP];
+    setCustomPersons(updated);
+    saveState({ customPersons: updated });
+    setPerson(newP.id);
+    setShowAddPerson(false);
+    setNewPersonName('');
+    setNewPersonColor(CUSTOM_COLOR_PALETTE[0]);
+  };
+
+  const handleLimitChange = (personId, value) => {
+    const num = parseFloat(value);
+    const updated = { ...personLimits };
+    if (value === '' || Number.isNaN(num) || num <= 0) {
+      delete updated[personId];
+    } else {
+      updated[personId] = num;
+    }
+    setPersonLimits(updated);
+    saveState({ personLimits: updated });
+  };
+
+  const handleConfirmDelete = () => {
+    if (!deleteTarget) return;
+    if (deleteTarget.type === 'category') {
+      const isCustom = customCategories.some((c) => c.id === deleteTarget.id);
+      if (isCustom) {
+        const updated = customCategories.filter((c) => c.id !== deleteTarget.id);
+        setCustomCategories(updated);
+        saveState({ customCategories: updated });
+      } else {
+        const updated = [...hiddenCategoryIds, deleteTarget.id];
+        setHiddenCategoryIds(updated);
+        saveState({ hiddenCategoryIds: updated });
+      }
+      if (category === deleteTarget.id) setCategory('other');
+    } else {
+      const isCustom = customPersons.some((p) => p.id === deleteTarget.id);
+      if (isCustom) {
+        const updated = customPersons.filter((p) => p.id !== deleteTarget.id);
+        setCustomPersons(updated);
+        saveState({ customPersons: updated });
+      } else {
+        const updated = [...hiddenPersonIds, deleteTarget.id];
+        setHiddenPersonIds(updated);
+        saveState({ hiddenPersonIds: updated });
+      }
+      if (person === deleteTarget.id) setPerson('home');
+    }
+    setDeleteTarget(null);
+  };
+
+  const handleExportExcel = () => {
+    if (exportList.length === 0) return;
+    try {
+      const sorted = [...exportList].sort(sortByDateDesc);
+      const rows = sorted.map((e) => {
+        const cat = ALL_CATEGORIES.find((c) => c.id === e.category) || OTHER_CATEGORY;
+        const p = ALL_PERSON_TAGS.find((pt) => pt.id === getPersonId(e)) || HOME_PERSON;
+        return { 'التاريخ': formatDate(e.date), 'الغرض': e.name, 'القسم': cat.label, 'لمين': p.label, 'المبلغ': e.amount, 'العملة': CURRENCY };
+      });
+      rows.push({ 'التاريخ': '', 'الغرض': 'الإجمالي', 'القسم': '', 'لمين': '', 'المبلغ': exportTotal, 'العملة': CURRENCY });
+
+      const worksheet = XLSX.utils.json_to_sheet(rows);
+      worksheet['!cols'] = [{ wch: 14 }, { wch: 26 }, { wch: 16 }, { wch: 10 }, { wch: 10 }, { wch: 8 }];
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'مصروف البيت');
+      const scopeSuffix = exportScope === 'all' ? '' : `-${exportScopeLabel}`;
+      XLSX.writeFile(workbook, `مصروف-البيت${scopeSuffix}-${exportRangeLabel.replace(/\s+/g, '-')}.xlsx`);
+      setExportError(false);
+      setShowExportModal(false);
+    } catch (e) {
+      setExportError(true);
+    }
+  };
+
+  const handleExportPdf = () => {
+    if (exportList.length === 0) return;
+    try {
+      const sorted = [...exportList].sort(sortByDateDesc);
+      const rowsHtml = sorted
+        .map((e) => {
+          const cat = ALL_CATEGORIES.find((c) => c.id === e.category) || OTHER_CATEGORY;
+          const p = ALL_PERSON_TAGS.find((pt) => pt.id === getPersonId(e)) || HOME_PERSON;
+          return `<tr>
+            <td style="padding:6px 4px;border-bottom:1px solid #ddd;">${formatDate(e.date)}</td>
+            <td style="padding:6px 4px;border-bottom:1px solid #ddd;">${escapeHtml(e.name)}</td>
+            <td style="padding:6px 4px;border-bottom:1px solid #ddd;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${cat.color};margin-left:5px;"></span>${cat.label}</td>
+            <td style="padding:6px 4px;border-bottom:1px solid #ddd;">${p.label}</td>
+            <td style="padding:6px 4px;border-bottom:1px solid #ddd;text-align:left;">${formatAmount(e.amount)} ${CURRENCY}</td>
+          </tr>`;
+        })
+        .join('');
+
+      const html = `<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="UTF-8" />
+<title>مصروف البيت - ${escapeHtml(exportRangeLabel)}</title>
+<style>
+  body { font-family: Arial, Tahoma, sans-serif; padding: 24px; color:#111; }
+  h1 { font-size: 20px; margin-bottom:2px; }
+  p { font-size: 13px; color:#555; margin-bottom:16px; }
+  table { width:100%; border-collapse: collapse; font-size:12px; }
+  th { text-align:right; border-bottom:2px solid #333; padding:6px 4px; }
+  tfoot td { padding:10px 4px; font-weight:700; border-top:2px solid #333; }
+</style></head>
+<body>
+  <h1>مصروف البيت — ${escapeHtml(exportRangeLabel)}</h1>
+  <p>${exportScopeLabel === 'الكل' ? 'كل الأغراض' : 'أغراض: ' + escapeHtml(exportScopeLabel)}</p>
+  <table>
+    <thead><tr><th>التاريخ</th><th>الغرض</th><th>القسم</th><th>لمين</th><th style="text-align:left">المبلغ</th></tr></thead>
+    <tbody>${rowsHtml}</tbody>
+    <tfoot><tr><td colspan="4">الإجمالي</td><td style="text-align:left">${formatAmount(exportTotal)} ${CURRENCY}</td></tr></tfoot>
+  </table>
+  <script>window.onload = function () { setTimeout(function () { window.print(); }, 200); };<\/script>
+</body></html>`;
+
+      const printWindow = window.open('', '_blank');
+      if (!printWindow) {
+        setExportError(true);
+        return;
+      }
+      printWindow.document.open();
+      printWindow.document.write(html);
+      printWindow.document.close();
+      setExportError(false);
+      setShowExportModal(false);
+    } catch (e) {
+      setExportError(true);
+    }
+  };
+
+  const historyEntry = historyViewId ? resetHistory.find((h) => h.id === historyViewId) : null;
+  const historyItems = historyEntry && Array.isArray(historyEntry.expenses) ? [...historyEntry.expenses].sort(sortByDateDesc) : [];
+  const historyDeposits = historyEntry && Array.isArray(historyEntry.deposits) ? [...historyEntry.deposits].sort(sortByDateDesc) : [];
+  const historyHasItems = historyItems.length > 0 || historyDeposits.length > 0;
+
+  const handleHistoryExcel = () => {
+    if (!historyEntry || !historyHasItems) return;
+    try {
+      const rows = historyItems.map((e) => {
+        const cat = ALL_CATEGORIES.find((c) => c.id === e.category) || OTHER_CATEGORY;
+        const p = ALL_PERSON_TAGS.find((pt) => pt.id === getPersonId(e)) || HOME_PERSON;
+        return { 'التاريخ': formatDate(e.date), 'الغرض': e.name, 'القسم': cat.label, 'لمين': p.label, 'المبلغ': e.amount, 'العملة': CURRENCY };
+      });
+      rows.push({ 'التاريخ': '', 'الغرض': 'إجمالي المصاريف', 'القسم': '', 'لمين': '', 'المبلغ': historyEntry.expenseTotal, 'العملة': CURRENCY });
+      const workbook = XLSX.utils.book_new();
+      const ws = XLSX.utils.json_to_sheet(rows);
+      ws['!cols'] = [{ wch: 14 }, { wch: 26 }, { wch: 16 }, { wch: 10 }, { wch: 10 }, { wch: 8 }];
+      XLSX.utils.book_append_sheet(workbook, ws, 'المصاريف');
+      if (historyDeposits.length > 0) {
+        const depRows = historyDeposits.map((d) => ({ 'التاريخ': formatDate(d.date), 'الملاحظة': d.note || '', 'المبلغ': d.amount, 'العملة': CURRENCY }));
+        depRows.push({ 'التاريخ': '', 'الملاحظة': 'إجمالي الإيداعات', 'المبلغ': historyEntry.depositTotal, 'العملة': CURRENCY });
+        const ws2 = XLSX.utils.json_to_sheet(depRows);
+        ws2['!cols'] = [{ wch: 14 }, { wch: 26 }, { wch: 10 }, { wch: 8 }];
+        XLSX.utils.book_append_sheet(workbook, ws2, 'الإيداعات');
+      }
+      XLSX.writeFile(workbook, `مصروف-البيت-${describeRange(historyEntry.fromDate, historyEntry.toDate).replace(/\s+/g, '-')}.xlsx`);
+      setExportError(false);
+    } catch (e) {
+      setExportError(true);
+    }
+  };
+
+  const handleHistoryPdf = () => {
+    if (!historyEntry || !historyHasItems) return;
+    try {
+      const td = 'padding:6px 4px;border-bottom:1px solid #ddd;';
+      const rowsHtml = historyItems
+        .map((e) => {
+          const cat = ALL_CATEGORIES.find((c) => c.id === e.category) || OTHER_CATEGORY;
+          const p = ALL_PERSON_TAGS.find((pt) => pt.id === getPersonId(e)) || HOME_PERSON;
+          return `<tr><td style="${td}">${formatDate(e.date)}</td><td style="${td}">${escapeHtml(e.name)}</td><td style="${td}">${escapeHtml(cat.label)}</td><td style="${td}">${escapeHtml(p.label)}</td><td style="${td}text-align:left;">${formatAmount(e.amount)} ${CURRENCY}</td></tr>`;
+        })
+        .join('');
+      const depHtml = historyDeposits
+        .map((d) => `<tr><td style="${td}">${formatDate(d.date)}</td><td style="${td}" colspan="3">${escapeHtml(d.note || '')}</td><td style="${td}text-align:left;">${formatAmount(d.amount)} ${CURRENCY}</td></tr>`)
+        .join('');
+      const rangeLabel = describeRange(historyEntry.fromDate, historyEntry.toDate);
+      const html = `<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="UTF-8" />
+<title>مصروف البيت - ${escapeHtml(rangeLabel)}</title>
+<style>
+  body { font-family: Arial, Tahoma, sans-serif; padding: 24px; color:#111; }
+  h1 { font-size: 20px; margin-bottom:2px; }
+  h2 { font-size: 15px; margin: 22px 0 6px; }
+  p { font-size: 13px; color:#555; margin-bottom:12px; }
+  table { width:100%; border-collapse: collapse; font-size:12px; }
+  th { text-align:right; border-bottom:2px solid #333; padding:6px 4px; }
+  tfoot td { padding:10px 4px; font-weight:700; border-top:2px solid #333; }
+</style></head>
+<body>
+  <h1>مصروف البيت — ${escapeHtml(rangeLabel)}</h1>
+  <p>مصاريف ${formatAmount(historyEntry.expenseTotal)} ${CURRENCY} · إيداعات ${formatAmount(historyEntry.depositTotal)} ${CURRENCY} · الصافي ${formatAmount(historyEntry.netTotal)} ${CURRENCY}</p>
+  <h2>المصاريف</h2>
+  <table>
+    <thead><tr><th>التاريخ</th><th>الغرض</th><th>القسم</th><th>لمين</th><th style="text-align:left">المبلغ</th></tr></thead>
+    <tbody>${rowsHtml}</tbody>
+    <tfoot><tr><td colspan="4">الإجمالي</td><td style="text-align:left">${formatAmount(historyEntry.expenseTotal)} ${CURRENCY}</td></tr></tfoot>
+  </table>
+  ${historyDeposits.length > 0 ? `<h2>الإيداعات</h2><table><thead><tr><th>التاريخ</th><th colspan="3">الملاحظة</th><th style="text-align:left">المبلغ</th></tr></thead><tbody>${depHtml}</tbody><tfoot><tr><td colspan="4">الإجمالي</td><td style="text-align:left">${formatAmount(historyEntry.depositTotal)} ${CURRENCY}</td></tr></tfoot></table>` : ''}
+  <script>window.onload = function () { setTimeout(function () { window.print(); }, 200); };<\/script>
+</body></html>`;
+      const w = window.open('', '_blank');
+      if (!w) {
+        setExportError(true);
+        return;
+      }
+      w.document.open();
+      w.document.write(html);
+      w.document.close();
+      setExportError(false);
+    } catch (e) {
+      setExportError(true);
+    }
+  };
+
+  const handleExportConfirm = () => {
+    if (exportFormat === 'excel') handleExportExcel();
+    else handleExportPdf();
+  };
+
+  return (
+    <div className="min-h-screen relative" style={{ background: COLORS.bg }} dir="rtl">
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Reem+Kufi:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+        input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.7) sepia(1) saturate(3) hue-rotate(5deg); cursor: pointer; }
+        input::placeholder { color: ${COLORS.textFaint}; }
+        input:focus { box-shadow: 0 0 0 2px rgba(201,162,39,0.5); border-color: ${COLORS.gold}; }
+        button:focus-visible { outline: 2px solid ${COLORS.gold}; outline-offset: 2px; }
+        button:hover { opacity: 0.88; }
+        button:active { transform: scale(0.97); }
+        @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+        @media (prefers-reduced-motion: reduce) {
+          * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+        }
+      `}</style>
+
+      <>
+          <div
+            className="fixed inset-0 pointer-events-none"
+            style={{ opacity: 0.035, backgroundImage: `repeating-linear-gradient(0deg, ${COLORS.gold} 0px, ${COLORS.gold} 1px, transparent 1px, transparent 28px)` }}
+          />
+
+          <div className="relative max-w-md mx-auto px-4 py-7">
+            {/* Header */}
+            <div className="flex items-start justify-between mb-1">
+              <div>
+                <div className="mb-1" style={{ color: COLORS.gold, fontFamily: "'Cairo', sans-serif", fontSize: 11, letterSpacing: '0.15em' }}>
+                  دفتر البيت
+                </div>
+                <h1 className="text-2xl leading-tight" style={{ color: COLORS.textPrimary, fontFamily: "'Reem Kufi', sans-serif" }}>
+                  مصروف البيت
+                </h1>
+              </div>
+              <div className="flex items-center gap-2 mt-1">
+                <button type="button" onClick={() => setShowDepositsModal(true)} className="p-2 rounded-full" style={{ background: 'rgba(255,255,255,0.05)' }} aria-label="الإيداعات">
+                  <HandCoins size={14} style={{ color: COLORS.textMuted }} />
+                </button>
+                <button type="button" onClick={() => setShowLimitsModal(true)} className="p-2 rounded-full" style={{ background: 'rgba(255,255,255,0.05)' }} aria-label="حدود الصرف">
+                  <Settings size={14} style={{ color: COLORS.textMuted }} />
+                </button>
+              </div>
+            </div>
+            <p className="mb-4" style={{ color: COLORS.textMuted, fontFamily: "'Cairo', sans-serif", fontSize: 12 }}>
+              سجّل كل غرض تشتريه للبيت وتابع مصروفك أول بأول
+            </p>
+
+            {limitWarning && (
+              <div className="flex items-start justify-between gap-2 mb-4 p-3 rounded-xl" style={{ background: 'rgba(176,82,79,0.15)', border: `1px solid ${COLORS.danger}` }}>
+                <span style={{ color: '#E4A6A3', fontFamily: "'Cairo', sans-serif", fontSize: 12, lineHeight: 1.6 }}>{limitWarning}</span>
+                <button type="button" onClick={() => setLimitWarning(null)} aria-label="إغلاق التنبيه">
+                  <X size={13} style={{ color: '#E4A6A3' }} />
+                </button>
+              </div>
+            )}
+
+            {/* Add expense form — moved up for fast entry */}
+            <div className="rounded-2xl p-4 mb-6" style={{ background: COLORS.surface, border: `1px solid ${COLORS.surfaceBorder}` }}>
+              <div className="font-semibold mb-3" style={{ color: COLORS.textPrimary, fontFamily: "'Cairo', sans-serif", fontSize: 14 }}>
+                إضافة غرض جديد
+              </div>
+
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="شو اشتريت؟ (خبز، منظف، ...)"
+                className="w-full mb-3 px-3.5 py-2.5 rounded-xl outline-none"
+                style={{ background: 'rgba(255,255,255,0.04)', color: COLORS.textPrimary, border: '1px solid rgba(255,255,255,0.08)', fontFamily: "'Cairo', sans-serif", fontSize: 14 }}
+              />
+
+              <div className="mb-1.5" style={{ color: COLORS.textMuted, fontFamily: "'Cairo', sans-serif", fontSize: 12 }}>
+                القسم
+              </div>
+              <div className="flex flex-wrap gap-1.5 mb-3">
+                {ALL_CATEGORIES.map((cat) => (
+                  <CategoryChip
+                    key={cat.id}
+                    cat={cat}
+                    active={category === cat.id}
+                    deletable={cat.id !== 'other'}
+                    onSelect={() => setCategory(cat.id)}
+                    onDelete={() => setDeleteTarget({ type: 'category', id: cat.id, label: cat.label })}
+                  />
+                ))}
+                <button
+                  type="button"
+                  onClick={() => setShowAddCategory(true)}
+                  className="flex items-center gap-1 px-3 py-1.5 rounded-xl"
+                  style={{ border: `1px dashed ${COLORS.surfaceBorder}`, color: COLORS.textMuted, fontFamily: "'Cairo', sans-serif", fontSize: 12 }}
+                >
+                  <Plus size={13} />
+                  جديد
+                </button>
+              </div>
+
+              <div className="mb-1.5" style={{ color: COLORS.textMuted, fontFamily: "'Cairo', sans-serif", fontSize: 12 }}>
+                لمين؟
+              </div>
+              <div className="flex flex-wrap gap-1.5 mb-3">
+                {ALL_PERSON_TAGS.map((p) => (
+                  <PersonChip
+                    key={p.id}
+                    p={p}
+                    active={person === p.id}
+                    deletable={p.id !== 'home'}
+                    onSelect={() => setPerson(p.id)}
+                    onDelete={() => setDeleteTarget({ type: 'person', id: p.id, label: p.label })}
+                  />
+                ))}
+                <button
+                  type="button"
+                  onClick={() => setShowAddPerson(true)}
+                  className="flex items-center gap-1 px-3 py-1.5 rounded-xl"
+                  style={{ border: `1px dashed ${COLORS.surfaceBorder}`, color: COLORS.textMuted, fontFamily: "'Cairo', sans-serif", fontSize: 12 }}
+                >
+                  <Plus size={13} />
+                  جديد
+                </button>
+              </div>
+              <p className="mb-4" style={{ color: COLORS.textFaint, fontFamily: "'Cairo', sans-serif", fontSize: 10.5 }}>
+                اضغط مطوّل على أي قسم أو شخص لحذفه
+              </p>
+
+              <div className="flex gap-2.5 mb-4">
+                <input
+                  type="number"
+                  inputMode="decimal"
+                  dir="ltr"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  placeholder="0.00"
+                  min="0"
+                  step="0.01"
+                  className="flex-1 px-3.5 py-2.5 rounded-xl text-right outline-none tabular-nums"
+                  style={{ background: 'rgba(255,255,255,0.04)', color: COLORS.textPrimary, border: '1px solid rgba(255,255,255,0.08)', fontFamily: "'IBM Plex Mono', monospace", fontSize: 14 }}
+                />
+                <input
+                  type="date"
+                  dir="ltr"
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                  className="flex-1 px-3 py-2.5 rounded-xl text-right outline-none"
+                  style={{ background: 'rgba(255,255,255,0.04)', color: COLORS.textPrimary, border: '1px solid rgba(255,255,255,0.08)', fontFamily: "'IBM Plex Mono', monospace", fontSize: 13, colorScheme: 'dark' }}
+                />
+              </div>
+
+              <button
+                type="button"
+                onClick={handleAdd}
+                disabled={!canAdd}
+                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl font-semibold"
+                style={{ background: COLORS.gold, color: COLORS.bg, fontFamily: "'Cairo', sans-serif", fontSize: 14, opacity: canAdd ? 1 : 0.45, cursor: canAdd ? 'pointer' : 'not-allowed' }}
+              >
+                <Plus size={16} />
+                ضيف للدفتر
+              </button>
+            </div>
+
+            {/* Last 3 days snapshot */}
+            <div className="grid grid-cols-3 gap-2 mb-4">
+              {RECENT_DAYS.map((d) => {
+                const total = dayTotal(d.date);
+                return (
+                  <button
+                    key={d.date}
+                    type="button"
+                    onClick={() => setDetailView({ type: 'day', id: d.date })}
+                    className="rounded-2xl p-3 text-right"
+                    style={{ background: COLORS.surface, border: `1px solid ${COLORS.surfaceBorder}` }}
+                  >
+                    <div style={{ color: COLORS.textMuted, fontFamily: "'Cairo', sans-serif", fontSize: 11, marginBottom: 4 }}>{d.label}</div>
+                    <div className="tabular-nums" style={{ color: COLORS.textPrimary, fontFamily: "'IBM Plex Mono', monospace", fontSize: 15, fontWeight: 600 }}>
+                      {formatAmount(total)}
+                    </div>
+                    <div style={{ color: COLORS.gold, fontFamily: "'IBM Plex Mono', monospace", fontSize: 11 }}>{CURRENCY}</div>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Daily spending chart, capped to fit page width */}
+            {dailyChartData.some((d) => d.total > 0) && (
+              <div className="rounded-2xl p-4 mb-6" style={{ background: COLORS.surface, border: `1px solid ${COLORS.surfaceBorder}`, overflow: 'hidden', width: '100%', boxSizing: 'border-box' }}>
+                <div className="flex items-center justify-between mb-3">
+                  <span style={{ color: COLORS.textMuted, fontFamily: "'Cairo', sans-serif", fontSize: 12 }}>
+                    مصروف آخر ١٤ يوم
+                  </span>
+                  <span style={{ color: COLORS.gold, fontFamily: "'IBM Plex Mono', monospace", fontSize: 11 }}>
+                    أعلى يوم {formatAmount(maxDailyTotal)} {CURRENCY}
+                  </span>
+                </div>
+                <div className="relative" style={{ height: 96, width: '100%', overflow: 'hidden' }}>
+                  <div className="absolute inset-x-0" style={{ top: 0, borderTop: '1px dashed rgba(255,255,255,0.07)' }} />
+                  <div className="absolute inset-x-0" style={{ top: '50%', borderTop: '1px dashed rgba(255,255,255,0.07)' }} />
+                  <div className="absolute inset-x-0" style={{ bottom: 0, borderTop: '1px solid rgba(255,255,255,0.14)' }} />
+                  <div className="flex items-end h-full" style={{ gap: 2, width: '100%', boxSizing: 'border-box' }}>
+                    {dailyChartData.map((d) => {
+                      const isToday = d.date === todayStr;
+                      const heightPct = d.total > 0 ? Math.max((d.total / maxDailyTotal) * 100, 5) : 2;
+                      return (
+                        <button
+                          key={d.date}
+                          type="button"
+                          onClick={() => setDetailView({ type: 'day', id: d.date })}
+                          aria-label={`${formatDate(d.date)}: ${formatAmount(d.total)} ${CURRENCY}`}
+                          style={{
+                            flex: '1 1 0%',
+                            width: 0,
+                            minWidth: 0,
+                            maxWidth: '100%',
+                            padding: 0,
+                            margin: 0,
+                            border: 'none',
+                            boxSizing: 'border-box',
+                            height: `${heightPct}%`,
+                            background: isToday
+                              ? `linear-gradient(180deg, #E4C860 0%, ${COLORS.gold} 100%)`
+                              : 'linear-gradient(180deg, rgba(201,162,39,0.6) 0%, rgba(201,162,39,0.22) 100%)',
+                            borderRadius: '4px 4px 2px 2px',
+                            boxShadow: isToday ? '0 0 10px rgba(228,200,96,0.55)' : 'none',
+                            transition: 'height 0.5s ease',
+                          }}
+                        />
+                      );
+                    })}
+                  </div>
+                </div>
+                <div className="flex justify-between mt-2">
+                  <span style={{ color: COLORS.textFaint, fontFamily: "'IBM Plex Mono', monospace", fontSize: 10 }}>{chartFirstLabel}</span>
+                  <span style={{ color: COLORS.textFaint, fontFamily: "'IBM Plex Mono', monospace", fontSize: 10 }}>{chartLastLabel}</span>
+                </div>
+              </div>
+            )}
+
+            {/* Type/person toggle */}
+            {expenses.length > 0 && (
+              <div className="flex justify-center mb-4">
+                <div className="flex gap-1 p-1 rounded-full" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                  <button
+                    type="button"
+                    onClick={() => setBreakdownView('type')}
+                    className="px-3 py-1.5 rounded-full"
+                    style={{
+                      background: breakdownView === 'type' ? COLORS.gold : 'transparent',
+                      color: breakdownView === 'type' ? COLORS.bg : COLORS.textMuted,
+                      fontFamily: "'Cairo', sans-serif",
+                      fontSize: 12,
+                      fontWeight: breakdownView === 'type' ? 700 : 400,
+                    }}
+                  >
+                    حسب النوع
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setBreakdownView('person')}
+                    className="px-3 py-1.5 rounded-full"
+                    style={{
+                      background: breakdownView === 'person' ? COLORS.gold : 'transparent',
+                      color: breakdownView === 'person' ? COLORS.bg : COLORS.textMuted,
+                      fontFamily: "'Cairo', sans-serif",
+                      fontSize: 12,
+                      fontWeight: breakdownView === 'person' ? 700 : 400,
+                    }}
+                  >
+                    حسب الشخص
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Coin / seal total */}
+            <div className="flex justify-center mb-7">
+              <div className="relative" style={{ width: 216, height: 216 }}>
+                <div className="absolute inset-0 rounded-full" style={{ background: ringGradient, transition: 'background 0.4s' }} />
+                <div
+                  className="absolute rounded-full flex items-center justify-center"
+                  style={{
+                    inset: 10,
+                    background: `radial-gradient(circle at 32% 26%, #1d4d3b 0%, ${COLORS.bg} 74%)`,
+                    boxShadow: 'inset 0 2px 16px rgba(0,0,0,0.55), inset 0 -8px 20px rgba(0,0,0,0.35)',
+                  }}
+                >
+                  <div className="absolute rounded-full" style={{ inset: 16, border: '1px dotted rgba(201,162,39,0.4)' }} />
+                  <div className="text-center px-5">
+                    <div className="mb-1" style={{ color: COLORS.gold, fontFamily: "'Cairo', sans-serif", fontSize: 10, letterSpacing: '0.1em' }}>
+                      {earliestActiveDate ? `منذ ${formatDate(earliestActiveDate)}` : 'الإجمالي'}
+                    </div>
+                    <div className="font-semibold tabular-nums" style={{ color: COLORS.textPrimary, fontFamily: "'IBM Plex Mono', monospace", fontSize: totalFontSize }}>
+                      {totalStr}
+                    </div>
+                    <div className="mt-0.5" style={{ color: COLORS.gold, fontFamily: "'IBM Plex Mono', monospace", fontSize: 16 }}>
+                      {CURRENCY}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Breakdown cards */}
+            {expenses.length > 0 && (
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-6">
+                {breakdownView === 'type'
+                  ? ALL_CATEGORIES.map((cat) => {
+                      const catTotal = categoryTotals[cat.id] || 0;
+                      const pct = activeExpensesTotal > 0 ? (catTotal / activeExpensesTotal) * 100 : 0;
+                      return (
+                        <button
+                          key={cat.id}
+                          type="button"
+                          onClick={() => catTotal > 0 && setDetailView({ type: 'category', id: cat.id })}
+                          className="rounded-2xl p-3 flex flex-col gap-2 text-right"
+                          style={{ background: COLORS.surface, border: `1px solid ${COLORS.surfaceBorder}`, opacity: catTotal > 0 ? 1 : 0.55, cursor: catTotal > 0 ? 'pointer' : 'default' }}
+                        >
+                          <div className="flex items-center gap-1.5">
+                            <div className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0" style={{ background: `${cat.color}26` }}>
+                              <CategoryGlyph cat={cat} size={14} />
+                            </div>
+                            <span className="truncate" style={{ color: COLORS.textMuted, fontFamily: "'Cairo', sans-serif", fontSize: 11 }}>
+                              {cat.label}
+                            </span>
+                          </div>
+                          <div className="font-semibold tabular-nums" style={{ color: COLORS.textPrimary, fontFamily: "'IBM Plex Mono', monospace", fontSize: 14 }}>
+                            {formatAmount(catTotal)} {CURRENCY}
+                          </div>
+                          <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.07)' }}>
+                            <div className="h-full rounded-full transition-all duration-500" style={{ width: `${pct}%`, background: cat.color }} />
+                          </div>
+                        </button>
+                      );
+                    })
+                  : ALL_PERSON_TAGS.map((p) => {
+                      const pTotal = personTotals[p.id] || 0;
+                      const pct = activeExpensesTotal > 0 ? (pTotal / activeExpensesTotal) * 100 : 0;
+                      const limit = personLimits[p.id];
+                      const overLimit = limit && pTotal > limit;
+                      return (
+                        <button
+                          key={p.id}
+                          type="button"
+                          onClick={() => pTotal > 0 && setDetailView({ type: 'person', id: p.id })}
+                          className="rounded-2xl p-3 flex flex-col gap-2 text-right"
+                          style={{
+                            background: COLORS.surface,
+                            border: `1px solid ${overLimit ? COLORS.danger : COLORS.surfaceBorder}`,
+                            opacity: pTotal > 0 ? 1 : 0.55,
+                            cursor: pTotal > 0 ? 'pointer' : 'default',
+                          }}
+                        >
+                          <div className="flex items-center gap-1.5">
+                            <div className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0" style={{ background: `${p.color}26` }}>
+                              <span style={{ color: p.color, fontFamily: "'Cairo', sans-serif", fontSize: 12, fontWeight: 700 }}>{p.letter}</span>
+                            </div>
+                            <span className="truncate" style={{ color: COLORS.textMuted, fontFamily: "'Cairo', sans-serif", fontSize: 11 }}>
+                              {p.label}
+                            </span>
+                          </div>
+                          <div className="font-semibold tabular-nums" style={{ color: overLimit ? COLORS.danger : COLORS.textPrimary, fontFamily: "'IBM Plex Mono', monospace", fontSize: 14 }}>
+                            {formatAmount(pTotal)} {CURRENCY}
+                          </div>
+                          <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.07)' }}>
+                            <div className="h-full rounded-full transition-all duration-500" style={{ width: `${Math.min(pct, 100)}%`, background: overLimit ? COLORS.danger : p.color }} />
+                          </div>
+                          {overLimit && (
+                            <div style={{ color: COLORS.danger, fontFamily: "'Cairo', sans-serif", fontSize: 10 }}>
+                              تجاوز الحد بـ {formatAmount(pTotal - limit)} {CURRENCY}
+                            </div>
+                          )}
+                        </button>
+                      );
+                    })}
+              </div>
+            )}
+
+            {/* Expense list */}
+            <div className="mb-6">
+              <div className="flex items-center justify-between mb-3">
+                <span className="font-semibold" style={{ color: COLORS.textPrimary, fontFamily: "'Cairo', sans-serif", fontSize: 14 }}>
+                  العناصر المسجلة
+                </span>
+                {expenses.length > 0 && (
+                  <div className="flex items-center gap-2">
+                    <span className="px-2 py-0.5 rounded-full" style={{ background: 'rgba(255,255,255,0.06)', color: COLORS.textMuted, fontFamily: "'IBM Plex Mono', monospace", fontSize: 12 }}>
+                      {sortedExpenses.length}
+                    </span>
+                    <button type="button" onClick={() => setShowExportModal(true)} className="p-1.5 rounded-lg" style={{ background: 'rgba(201,162,39,0.14)' }} aria-label="تنزيل كشف الأغراض">
+                      <Download size={14} style={{ color: COLORS.gold }} />
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {sortedExpenses.length === 0 ? (
+                <div className="rounded-2xl p-6 text-center" style={{ background: COLORS.surface, border: `1px solid ${COLORS.surfaceBorder}` }}>
+                  <p style={{ color: COLORS.textMuted, fontFamily: "'Cairo', sans-serif", fontSize: 14 }}>لسا ما ضفت شي... يلا سجّل أول غرض اشتريته!</p>
+                </div>
+              ) : (
+                <div className="rounded-2xl overflow-hidden" style={{ background: COLORS.surface, border: `1px solid ${COLORS.surfaceBorder}` }}>
+                  {sortedExpenses.map((expense, idx) => {
+                    const cat = ALL_CATEGORIES.find((c) => c.id === expense.category) || OTHER_CATEGORY;
+                    const personTag = ALL_PERSON_TAGS.find((p) => p.id === getPersonId(expense)) || HOME_PERSON;
+                    return (
+                      <div
+                        key={expense.id}
+                        className="flex items-center gap-3 px-3.5 py-3"
+                        style={{ borderBottom: idx < sortedExpenses.length - 1 ? '1px solid rgba(255,255,255,0.055)' : 'none', animation: 'fadeSlideIn 0.35s ease-out' }}
+                      >
+                        <div className="w-9 h-9 rounded-full flex items-center justify-center shrink-0" style={{ background: `${cat.color}26` }}>
+                          <CategoryGlyph cat={cat} size={15} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="truncate" style={{ color: COLORS.textPrimary, fontFamily: "'Cairo', sans-serif", fontSize: 14 }}>
+                            {expense.name}
+                          </div>
+                          <div style={{ color: COLORS.textMuted, fontFamily: "'Cairo', sans-serif", fontSize: 12 }}>
+                            {formatDate(expense.date)} · {personTag.label}
+                          </div>
+                        </div>
+                        <div className="font-semibold tabular-nums shrink-0" style={{ color: COLORS.gold, fontFamily: "'IBM Plex Mono', monospace", fontSize: 14 }}>
+                          {formatAmount(expense.amount)} {CURRENCY}
+                        </div>
+                        <button type="button" onClick={() => setDeleteItemTarget({ type: 'expense', id: expense.id, label: expense.name })} className="shrink-0 p-1.5 rounded-lg transition-colors" aria-label="حذف">
+                          <Trash2 size={14} style={{ color: COLORS.textMuted }} />
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+            {/* Previous reset cycles */}
+            {resetHistory.length > 0 && (
+              <div className="mb-6">
+                <div className="font-semibold mb-3" style={{ color: COLORS.textPrimary, fontFamily: "'Cairo', sans-serif", fontSize: 14 }}>
+                  دورات سابقة
+                </div>
+                <div className="rounded-2xl overflow-hidden" style={{ background: COLORS.surface, border: `1px solid ${COLORS.surfaceBorder}` }}>
+                  {resetHistory.map((h, idx) => (
+                    <button type="button" key={h.id} onClick={() => setHistoryViewId(h.id)} className="p-3.5 w-full text-right" style={{ display: 'block', borderBottom: idx < resetHistory.length - 1 ? '1px solid rgba(255,255,255,0.055)' : 'none' }}>
+                      <div className="flex items-center justify-between mb-1.5">
+                        <span style={{ color: COLORS.textPrimary, fontFamily: "'Cairo', sans-serif", fontSize: 13 }}>{describeRange(h.fromDate, h.toDate)}</span>
+                        <span className="tabular-nums" style={{ color: h.netTotal >= 0 ? '#8FBF8A' : COLORS.danger, fontFamily: "'IBM Plex Mono', monospace", fontSize: 13, fontWeight: 700 }}>
+                          {h.netTotal >= 0 ? '+' : ''}{formatAmount(h.netTotal)} {CURRENCY}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <span style={{ color: COLORS.textMuted, fontFamily: "'IBM Plex Mono', monospace", fontSize: 11 }}>مصاريف {formatAmount(h.expenseTotal)} {CURRENCY}</span>
+                        <span style={{ color: COLORS.textMuted, fontFamily: "'IBM Plex Mono', monospace", fontSize: 11 }}>إيداعات {formatAmount(h.depositTotal)} {CURRENCY}</span>
+                        <span style={{ color: COLORS.gold, fontFamily: "'Cairo', sans-serif", fontSize: 11, marginRight: 'auto' }}>عرض القائمة</span>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {saveError && (
+              <p className="text-center mb-4" style={{ color: COLORS.danger, fontFamily: "'Cairo', sans-serif", fontSize: 12 }}>
+                صار خطأ بحفظ البيانات، جرب مرة ثانية
+              </p>
+            )}
+            {exportError && (
+              <p className="text-center mb-4" style={{ color: COLORS.danger, fontFamily: "'Cairo', sans-serif", fontSize: 12 }}>
+                صار خطأ بتصدير الملف — إذا حاب PDF ومنعه المتصفح، جرب تسمح بالنوافذ المنبثقة (popups) لهاد الموقع
+              </p>
+            )}
+
+            {/* Reset */}
+            <div className="flex justify-center mb-3">
+              <button type="button" onClick={() => setShowResetConfirm(true)} className="flex items-center gap-1.5 px-3 py-2" style={{ color: COLORS.textMuted, fontFamily: "'Cairo', sans-serif", fontSize: 12 }}>
+                <RotateCcw size={12} />
+                تصفير الدورة الحالية
+              </button>
+            </div>
+            <p className="text-center" style={{ color: COLORS.textFaint, fontFamily: "'Cairo', sans-serif", fontSize: 11 }}>
+              بياناتك محفوظة على هالجهاز، ما بتضيع لما تسكر التطبيق
+            </p>
+          </div>
+
+          {/* Previous cycle modal */}
+          {historyEntry && (
+            <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center" style={{ background: 'rgba(0,0,0,0.62)' }} onClick={() => setHistoryViewId(null)}>
+              <div
+                className="w-full sm:max-w-sm rounded-t-3xl sm:rounded-2xl p-5"
+                style={{ background: COLORS.surface, border: '1px solid rgba(201,162,39,0.28)', maxHeight: '85vh', display: 'flex', flexDirection: 'column' }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <h3 className="font-semibold" style={{ color: COLORS.textPrimary, fontFamily: "'Cairo', sans-serif", fontSize: 16 }}>
+                    {describeRange(historyEntry.fromDate, historyEntry.toDate)}
+                  </h3>
+                  <button type="button" onClick={() => setHistoryViewId(null)} aria-label="إغلاق">
+                    <X size={18} style={{ color: COLORS.textMuted }} />
+                  </button>
+                </div>
+                <div className="rounded-2xl p-3 mb-3" style={{ background: 'rgba(255,255,255,0.03)', border: `1px solid ${COLORS.surfaceBorder}` }}>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span style={{ color: COLORS.textMuted, fontFamily: "'Cairo', sans-serif", fontSize: 12 }}>المصاريف</span>
+                    <span className="tabular-nums" style={{ color: COLORS.textPrimary, fontFamily: "'IBM Plex Mono', monospace", fontSize: 13, fontWeight: 600 }}>{formatAmount(historyEntry.expenseTotal)} {CURRENCY}</span>
+                  </div>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span style={{ color: COLORS.textMuted, fontFamily: "'Cairo', sans-serif", fontSize: 12 }}>الإيداعات</span>
+                    <span className="tabular-nums" style={{ color: COLORS.textPrimary, fontFamily: "'IBM Plex Mono', monospace", fontSize: 13, fontWeight: 600 }}>{formatAmount(historyEntry.depositTotal)} {CURRENCY}</span>
+                  </div>
+                  <div className="flex items-center justify-between pt-1.5" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+                    <span style={{ color: COLORS.textMuted, fontFamily: "'Cairo', sans-serif", fontSize: 12 }}>الصافي</span>
+                    <span className="tabular-nums" style={{ color: historyEntry.netTotal >= 0 ? '#8FBF8A' : COLORS.danger, fontFamily: "'IBM Plex Mono', monospace", fontSize: 14, fontWeight: 700 }}>
+                      {historyEntry.netTotal >= 0 ? '+' : ''}{formatAmount(historyEntry.netTotal)} {CURRENCY}
+                    </span>
+                  </div>
+                </div>
+                {historyHasItems ? (
+                  <>
+                    <div className="flex gap-2 mb-3">
+                      <button type="button" onClick={handleHistoryExcel} className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl" style={{ background: 'rgba(201,162,39,0.14)', border: '1px solid rgba(201,162,39,0.35)', color: COLORS.gold, fontFamily: "'Cairo', sans-serif", fontSize: 13 }}>
+                        <Download size={14} /> Excel
+                      </button>
+                      <button type="button" onClick={handleHistoryPdf} className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl" style={{ background: 'rgba(201,162,39,0.14)', border: '1px solid rgba(201,162,39,0.35)', color: COLORS.gold, fontFamily: "'Cairo', sans-serif", fontSize: 13 }}>
+                        <Download size={14} /> PDF
+                      </button>
+                    </div>
+                    <div style={{ overflowY: 'auto', flex: 1 }}>
+                      {historyItems.map((e, idx) => {
+                        const cat = ALL_CATEGORIES.find((c) => c.id === e.category) || OTHER_CATEGORY;
+                        const pt = ALL_PERSON_TAGS.find((p) => p.id === getPersonId(e)) || HOME_PERSON;
+                        return (
+                          <div key={e.id} className="flex items-center gap-3 py-2.5" style={{ borderBottom: idx < historyItems.length - 1 || historyDeposits.length > 0 ? '1px solid rgba(255,255,255,0.055)' : 'none' }}>
+                            <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style={{ background: `${cat.color}26` }}>
+                              <CategoryGlyph cat={cat} size={13} />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <div className="truncate" style={{ color: COLORS.textPrimary, fontFamily: "'Cairo', sans-serif", fontSize: 14 }}>{e.name}</div>
+                              <div style={{ color: COLORS.textMuted, fontFamily: "'Cairo', sans-serif", fontSize: 12 }}>{formatDate(e.date)} · {cat.label} · {pt.label}</div>
+                            </div>
+                            <div className="font-semibold tabular-nums shrink-0" style={{ color: COLORS.gold, fontFamily: "'IBM Plex Mono', monospace", fontSize: 14 }}>{formatAmount(e.amount)} {CURRENCY}</div>
+                          </div>
+                        );
+                      })}
+                      {historyDeposits.length > 0 && (
+                        <div className="pt-3 pb-1" style={{ color: COLORS.textMuted, fontFamily: "'Cairo', sans-serif", fontSize: 12 }}>الإيداعات</div>
+                      )}
+                      {historyDeposits.map((d) => (
+                        <div key={d.id} className="flex items-center gap-3 py-2">
+                          <div className="flex-1 min-w-0">
+                            <div className="truncate" style={{ color: COLORS.textPrimary, fontFamily: "'Cairo', sans-serif", fontSize: 14 }}>{d.note || formatDate(d.date)}</div>
+                            <div style={{ color: COLORS.textMuted, fontFamily: "'Cairo', sans-serif", fontSize: 12 }}>{formatDate(d.date)}</div>
+                          </div>
+                          <div className="font-semibold tabular-nums shrink-0" style={{ color: '#8FBF8A', fontFamily: "'IBM Plex Mono', monospace", fontSize: 14 }}>+{formatAmount(d.amount)} {CURRENCY}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  <p className="text-center py-4" style={{ color: COLORS.textMuted, fontFamily: "'Cairo', sans-serif", fontSize: 13 }}>
+                    هاي الدورة انحفظت قبل ما يتخزن فيها تفاصيل الأغراض، فبس المجاميع متوفرة. الدورات الجاية رح تنحفظ بقوائمها كاملة.
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Detail view modal */}
+          {detailView && (
+            <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center" style={{ background: 'rgba(0,0,0,0.62)' }} onClick={() => setDetailView(null)}>
+              <div
+                className="w-full sm:max-w-sm rounded-t-3xl sm:rounded-2xl p-5"
+                style={{ background: COLORS.surface, border: '1px solid rgba(201,162,39,0.28)', maxHeight: '85vh', display: 'flex', flexDirection: 'column' }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="flex items-start justify-between mb-1">
+                  <div className="flex items-center gap-2">
+                    <div className="w-9 h-9 rounded-full flex items-center justify-center shrink-0" style={{ background: detailView.type === 'day' ? 'rgba(201,162,39,0.16)' : `${detailColor}26` }}>
+                      {detailView.type === 'day' ? <Calendar size={16} style={{ color: COLORS.gold }} /> : detailIconNode}
+                    </div>
+                    <h3 className="font-semibold" style={{ color: COLORS.textPrimary, fontFamily: "'Cairo', sans-serif", fontSize: 16 }}>
+                      {detailLabel}
+                    </h3>
+                  </div>
+                  <button type="button" onClick={() => setDetailView(null)} aria-label="إغلاق">
+                    <X size={18} style={{ color: COLORS.textMuted }} />
+                  </button>
+                </div>
+                <div className="mb-4" style={{ color: COLORS.gold, fontFamily: "'IBM Plex Mono', monospace", fontSize: 22, fontWeight: 700 }}>
+                  {formatAmount(detailTotal)} {CURRENCY}
+                  <span style={{ color: COLORS.textMuted, fontFamily: "'Cairo', sans-serif", fontSize: 12, fontWeight: 400 }}> · {detailItems.length} غرض</span>
+                </div>
+                <div style={{ overflowY: 'auto', flex: 1 }}>
+                  {detailItems.map((expense, idx) => {
+                    const cat = ALL_CATEGORIES.find((c) => c.id === expense.category) || OTHER_CATEGORY;
+                    const personTag = ALL_PERSON_TAGS.find((p) => p.id === getPersonId(expense)) || HOME_PERSON;
+                    return (
+                      <div key={expense.id} className="flex items-center gap-3 py-3" style={{ borderBottom: idx < detailItems.length - 1 ? '1px solid rgba(255,255,255,0.055)' : 'none' }}>
+                        {detailView.type === 'day' && (
+                          <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style={{ background: `${cat.color}26` }}>
+                            <CategoryGlyph cat={cat} size={13} />
+                          </div>
+                        )}
+                        <div className="flex-1 min-w-0">
+                          <div className="truncate" style={{ color: COLORS.textPrimary, fontFamily: "'Cairo', sans-serif", fontSize: 14 }}>
+                            {expense.name}
+                          </div>
+                          <div style={{ color: COLORS.textMuted, fontFamily: "'Cairo', sans-serif", fontSize: 12 }}>
+                            {detailView.type === 'day'
+                              ? `${cat.label} · ${personTag.label}`
+                              : detailView.type === 'category'
+                              ? `${formatDate(expense.date)} · ${personTag.label}`
+                              : `${formatDate(expense.date)} · ${cat.label}`}
+                          </div>
+                        </div>
+                        <div className="font-semibold tabular-nums shrink-0" style={{ color: COLORS.gold, fontFamily: "'IBM Plex Mono', monospace", fontSize: 14 }}>
+                          {formatAmount(expense.amount)} {CURRENCY}
+                        </div>
+                        <button type="button" onClick={() => setDeleteItemTarget({ type: 'expense', id: expense.id, label: expense.name })} className="shrink-0 p-1 rounded-lg" aria-label="حذف">
+                          <Trash2 size={13} style={{ color: COLORS.textMuted }} />
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Deposits modal */}
+          {showDepositsModal && (
+            <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center" style={{ background: 'rgba(0,0,0,0.62)' }} onClick={() => setShowDepositsModal(false)}>
+              <div
+                className="w-full sm:max-w-sm rounded-t-3xl sm:rounded-2xl p-5"
+                style={{ background: COLORS.surface, border: '1px solid rgba(201,162,39,0.28)', maxHeight: '85vh', display: 'flex', flexDirection: 'column' }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <HandCoins size={18} style={{ color: COLORS.gold }} />
+                    <h3 className="font-semibold" style={{ color: COLORS.textPrimary, fontFamily: "'Cairo', sans-serif", fontSize: 16 }}>
+                      الإيداعات
+                    </h3>
+                  </div>
+                  <button type="button" onClick={() => setShowDepositsModal(false)} aria-label="إغلاق">
+                    <X size={18} style={{ color: COLORS.textMuted }} />
+                  </button>
+                </div>
+
+                <div className="rounded-2xl p-3 mb-4" style={{ background: 'rgba(255,255,255,0.03)', border: `1px solid ${COLORS.surfaceBorder}` }}>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span style={{ color: COLORS.textMuted, fontFamily: "'Cairo', sans-serif", fontSize: 12 }}>إجمالي الإيداعات</span>
+                    <span className="tabular-nums" style={{ color: COLORS.textPrimary, fontFamily: "'IBM Plex Mono', monospace", fontSize: 13, fontWeight: 600 }}>
+                      {formatAmount(totalDeposits)} {CURRENCY}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span style={{ color: COLORS.textMuted, fontFamily: "'Cairo', sans-serif", fontSize: 12 }}>إجمالي المصاريف</span>
+                    <span className="tabular-nums" style={{ color: COLORS.textPrimary, fontFamily: "'IBM Plex Mono', monospace", fontSize: 13, fontWeight: 600 }}>
+                      {formatAmount(activeExpensesTotal)} {CURRENCY}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between pt-1.5" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+                    <span style={{ color: COLORS.textMuted, fontFamily: "'Cairo', sans-serif", fontSize: 12 }}>الصافي</span>
+                    <span className="tabular-nums" style={{ color: netBalance >= 0 ? '#8FBF8A' : COLORS.danger, fontFamily: "'IBM Plex Mono', monospace", fontSize: 14, fontWeight: 700 }}>
+                      {netBalance >= 0 ? '+' : ''}{formatAmount(netBalance)} {CURRENCY}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="mb-4">
+                  <input
+                    type="number"
+                    inputMode="decimal"
+                    dir="ltr"
+                    value={depositAmount}
+                    onChange={(e) => setDepositAmount(e.target.value)}
+                    placeholder="0.00"
+                    min="0"
+                    step="0.01"
+                    className="w-full mb-2 px-3.5 py-2.5 rounded-xl text-right outline-none tabular-nums"
+                    style={{ background: 'rgba(255,255,255,0.04)', color: COLORS.textPrimary, border: '1px solid rgba(255,255,255,0.08)', fontFamily: "'IBM Plex Mono', monospace", fontSize: 14 }}
+                  />
+                  <div className="flex gap-2 mb-2">
+                    <input
+                      type="date"
+                      dir="ltr"
+                      value={depositDate}
+                      onChange={(e) => setDepositDate(e.target.value)}
+                      className="flex-1 px-3 py-2.5 rounded-xl text-right outline-none"
+                      style={{ background: 'rgba(255,255,255,0.04)', color: COLORS.textPrimary, border: '1px solid rgba(255,255,255,0.08)', fontFamily: "'IBM Plex Mono', monospace", fontSize: 13, colorScheme: 'dark' }}
+                    />
+                    <input
+                      type="text"
+                      value={depositNote}
+                      onChange={(e) => setDepositNote(e.target.value)}
+                      placeholder="ملاحظة (اختياري)"
+                      className="flex-1 px-3 py-2.5 rounded-xl outline-none"
+                      style={{ background: 'rgba(255,255,255,0.04)', color: COLORS.textPrimary, border: '1px solid rgba(255,255,255,0.08)', fontFamily: "'Cairo', sans-serif", fontSize: 13 }}
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleAddDeposit}
+                    disabled={!canAddDeposit}
+                    className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl font-semibold"
+                    style={{ background: COLORS.gold, color: COLORS.bg, fontFamily: "'Cairo', sans-serif", fontSize: 13, opacity: canAddDeposit ? 1 : 0.45, cursor: canAddDeposit ? 'pointer' : 'not-allowed' }}
+                  >
+                    <Plus size={14} />
+                    إضافة إيداع
+                  </button>
+                </div>
+
+                <div style={{ overflowY: 'auto', flex: 1 }}>
+                  {sortedDeposits.length === 0 ? (
+                    <p className="text-center" style={{ color: COLORS.textMuted, fontFamily: "'Cairo', sans-serif", fontSize: 13 }}>
+                      ما في إيداعات مسجلة لسا
+                    </p>
+                  ) : (
+                    sortedDeposits.map((dep, idx) => (
+                      <div
+                        key={dep.id}
+                        className="flex items-center gap-3 py-2.5"
+                        style={{ borderBottom: idx < sortedDeposits.length - 1 ? '1px solid rgba(255,255,255,0.055)' : 'none' }}
+                      >
+                        <div className="flex-1 min-w-0">
+                          <div className="truncate" style={{ color: COLORS.textPrimary, fontFamily: "'Cairo', sans-serif", fontSize: 13 }}>
+                            {dep.note || formatDate(dep.date)}
+                          </div>
+                          {dep.note && (
+                            <div style={{ color: COLORS.textMuted, fontFamily: "'Cairo', sans-serif", fontSize: 11 }}>{formatDate(dep.date)}</div>
+                          )}
+                        </div>
+                        <div className="font-semibold tabular-nums shrink-0" style={{ color: '#8FBF8A', fontFamily: "'IBM Plex Mono', monospace", fontSize: 13 }}>
+                          +{formatAmount(dep.amount)} {CURRENCY}
+                        </div>
+                        <button type="button" onClick={() => setDeleteItemTarget({ type: 'deposit', id: dep.id, label: dep.note || formatDate(dep.date) })} className="shrink-0 p-1 rounded-lg" aria-label="حذف">
+                          <Trash2 size={13} style={{ color: COLORS.textMuted }} />
+                        </button>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Add category modal */}
+          {showAddCategory && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-5" style={{ background: 'rgba(0,0,0,0.62)' }} onClick={() => setShowAddCategory(false)}>
+              <div className="w-full max-w-xs rounded-2xl p-5" style={{ background: COLORS.surface, border: '1px solid rgba(201,162,39,0.28)' }} onClick={(e) => e.stopPropagation()}>
+                <div className="flex items-start justify-between mb-4">
+                  <h3 className="font-semibold" style={{ color: COLORS.textPrimary, fontFamily: "'Cairo', sans-serif", fontSize: 15 }}>
+                    إضافة قسم جديد
+                  </h3>
+                  <button type="button" onClick={() => setShowAddCategory(false)} aria-label="إغلاق">
+                    <X size={16} style={{ color: COLORS.textMuted }} />
+                  </button>
+                </div>
+                <input
+                  type="text"
+                  value={newCatName}
+                  onChange={(e) => setNewCatName(e.target.value)}
+                  placeholder="اسم القسم"
+                  className="w-full mb-4 px-3.5 py-2.5 rounded-xl outline-none"
+                  style={{ background: 'rgba(255,255,255,0.04)', color: COLORS.textPrimary, border: '1px solid rgba(255,255,255,0.08)', fontFamily: "'Cairo', sans-serif", fontSize: 14 }}
+                />
+                <div className="mb-1.5" style={{ color: COLORS.textMuted, fontFamily: "'Cairo', sans-serif", fontSize: 12 }}>
+                  اللون
+                </div>
+                <ColorSwatchPicker value={newCatColor} onChange={setNewCatColor} />
+                <button
+                  type="button"
+                  onClick={handleAddCategory}
+                  disabled={!newCatName.trim()}
+                  className="w-full py-3 rounded-xl font-semibold"
+                  style={{ background: COLORS.gold, color: COLORS.bg, fontFamily: "'Cairo', sans-serif", fontSize: 14, opacity: newCatName.trim() ? 1 : 0.45 }}
+                >
+                  إضافة
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Add person modal */}
+          {showAddPerson && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-5" style={{ background: 'rgba(0,0,0,0.62)' }} onClick={() => setShowAddPerson(false)}>
+              <div className="w-full max-w-xs rounded-2xl p-5" style={{ background: COLORS.surface, border: '1px solid rgba(201,162,39,0.28)' }} onClick={(e) => e.stopPropagation()}>
+                <div className="flex items-start justify-between mb-4">
+                  <h3 className="font-semibold" style={{ color: COLORS.textPrimary, fontFamily: "'Cairo', sans-serif", fontSize: 15 }}>
+                    إضافة شخص جديد
+                  </h3>
+                  <button type="button" onClick={() => setShowAddPerson(false)} aria-label="إغلاق">
+                    <X size={16} style={{ color: COLORS.textMuted }} />
+                  </button>
+                </div>
+                <input
+                  type="text"
+                  value={newPersonName}
+                  onChange={(e) => setNewPersonName(e.target.value)}
+                  placeholder="الاسم"
+                  className="w-full mb-4 px-3.5 py-2.5 rounded-xl outline-none"
+                  style={{ background: 'rgba(255,255,255,0.04)', color: COLORS.textPrimary, border: '1px solid rgba(255,255,255,0.08)', fontFamily: "'Cairo', sans-serif", fontSize: 14 }}
+                />
+                <div className="mb-1.5" style={{ color: COLORS.textMuted, fontFamily: "'Cairo', sans-serif", fontSize: 12 }}>
+                  اللون
+                </div>
+                <ColorSwatchPicker value={newPersonColor} onChange={setNewPersonColor} />
+                <button
+                  type="button"
+                  onClick={handleAddPerson}
+                  disabled={!newPersonName.trim()}
+                  className="w-full py-3 rounded-xl font-semibold"
+                  style={{ background: COLORS.gold, color: COLORS.bg, fontFamily: "'Cairo', sans-serif", fontSize: 14, opacity: newPersonName.trim() ? 1 : 0.45 }}
+                >
+                  إضافة
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Delete expense/deposit item confirmation modal */}
+          {deleteItemTarget && (
+            <div className="fixed inset-0 flex items-center justify-center p-5" style={{ background: 'rgba(0,0,0,0.62)', zIndex: 60 }} onClick={() => setDeleteItemTarget(null)}>
+              <div className="w-full max-w-xs rounded-2xl p-5" style={{ background: COLORS.surface, border: '1px solid rgba(201,162,39,0.28)' }} onClick={(e) => e.stopPropagation()}>
+                <div className="flex items-start justify-between mb-3">
+                  <h3 className="font-semibold" style={{ color: COLORS.textPrimary, fontFamily: "'Cairo', sans-serif", fontSize: 15 }}>
+                    حذف {deleteItemTarget.label}؟
+                  </h3>
+                  <button type="button" onClick={() => setDeleteItemTarget(null)} aria-label="إغلاق">
+                    <X size={16} style={{ color: COLORS.textMuted }} />
+                  </button>
+                </div>
+                <p className="mb-5" style={{ color: COLORS.textMuted, fontFamily: "'Cairo', sans-serif", fontSize: 13 }}>
+                  ما رح تقدر ترجعه بعد الحذف. متأكد؟
+                </p>
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setDeleteItemTarget(null)}
+                    className="flex-1 py-2.5 rounded-xl"
+                    style={{ background: 'rgba(255,255,255,0.06)', color: COLORS.textPrimary, fontFamily: "'Cairo', sans-serif", fontSize: 13 }}
+                  >
+                    إلغاء
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (deleteItemTarget.type === 'expense') handleDelete(deleteItemTarget.id);
+                      else handleDeleteDeposit(deleteItemTarget.id);
+                      setDeleteItemTarget(null);
+                    }}
+                    className="flex-1 py-2.5 rounded-xl font-semibold"
+                    style={{ background: COLORS.danger, color: '#fff', fontFamily: "'Cairo', sans-serif", fontSize: 13 }}
+                  >
+                    حذف
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Delete category/person confirmation modal */}
+          {deleteTarget && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-5" style={{ background: 'rgba(0,0,0,0.62)' }} onClick={() => setDeleteTarget(null)}>
+              <div className="w-full max-w-xs rounded-2xl p-5" style={{ background: COLORS.surface, border: '1px solid rgba(201,162,39,0.28)' }} onClick={(e) => e.stopPropagation()}>
+                <div className="flex items-start justify-between mb-3">
+                  <h3 className="font-semibold" style={{ color: COLORS.textPrimary, fontFamily: "'Cairo', sans-serif", fontSize: 15 }}>
+                    حذف {deleteTarget.label}؟
+                  </h3>
+                  <button type="button" onClick={() => setDeleteTarget(null)} aria-label="إغلاق">
+                    <X size={16} style={{ color: COLORS.textMuted }} />
+                  </button>
+                </div>
+                <p className="mb-5" style={{ color: COLORS.textMuted, fontFamily: "'Cairo', sans-serif", fontSize: 13 }}>
+                  الأغراض المسجلة عليه رح تظهر تحت {deleteTarget.type === 'category' ? '"أخرى"' : '"منزل"'} بدالها. متأكد؟
+                </p>
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setDeleteTarget(null)}
+                    className="flex-1 py-2.5 rounded-xl"
+                    style={{ background: 'rgba(255,255,255,0.06)', color: COLORS.textPrimary, fontFamily: "'Cairo', sans-serif", fontSize: 13 }}
+                  >
+                    إلغاء
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleConfirmDelete}
+                    className="flex-1 py-2.5 rounded-xl font-semibold"
+                    style={{ background: COLORS.danger, color: '#fff', fontFamily: "'Cairo', sans-serif", fontSize: 13 }}
+                  >
+                    حذف
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Limits modal */}
+          {showLimitsModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-5" style={{ background: 'rgba(0,0,0,0.62)' }} onClick={() => setShowLimitsModal(false)}>
+              <div className="w-full max-w-xs rounded-2xl p-5" style={{ background: COLORS.surface, border: '1px solid rgba(201,162,39,0.28)' }} onClick={(e) => e.stopPropagation()}>
+                <div className="flex items-start justify-between mb-4">
+                  <h3 className="font-semibold" style={{ color: COLORS.textPrimary, fontFamily: "'Cairo', sans-serif", fontSize: 15 }}>
+                    حدود الصرف
+                  </h3>
+                  <button type="button" onClick={() => setShowLimitsModal(false)} aria-label="إغلاق">
+                    <X size={16} style={{ color: COLORS.textMuted }} />
+                  </button>
+                </div>
+                <div className="flex flex-col gap-3 mb-2">
+                  {ALL_PERSON_TAGS.map((p) => (
+                    <div key={p.id} className="flex items-center justify-between gap-3">
+                      <span style={{ color: COLORS.textPrimary, fontFamily: "'Cairo', sans-serif", fontSize: 13 }}>{p.label}</span>
+                      <div className="flex items-center gap-1.5">
+                        <input
+                          type="number"
+                          inputMode="decimal"
+                          dir="ltr"
+                          min="0"
+                          defaultValue={personLimits[p.id] || ''}
+                          onBlur={(e) => handleLimitChange(p.id, e.target.value)}
+                          placeholder="بدون حد"
+                          className="px-2.5 py-1.5 rounded-lg text-right outline-none"
+                          style={{ width: 96, background: 'rgba(255,255,255,0.04)', color: COLORS.textPrimary, border: '1px solid rgba(255,255,255,0.08)', fontFamily: "'IBM Plex Mono', monospace", fontSize: 13 }}
+                        />
+                        <span style={{ color: COLORS.textMuted, fontFamily: "'Cairo', sans-serif", fontSize: 12 }}>{CURRENCY}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <p className="mt-2" style={{ color: COLORS.textFaint, fontFamily: "'Cairo', sans-serif", fontSize: 11 }}>
+                  اترك الخانة فاضية لإلغاء الحد. بيتنبّهك التطبيق إذا تجاوزت الحد بالدورة الحالية.
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* Export options modal */}
+          {showExportModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-5" style={{ background: 'rgba(0,0,0,0.62)' }} onClick={() => setShowExportModal(false)}>
+              <div className="w-full max-w-xs rounded-2xl p-5" style={{ background: COLORS.surface, border: '1px solid rgba(201,162,39,0.28)' }} onClick={(e) => e.stopPropagation()}>
+                <div className="flex items-start justify-between mb-4">
+                  <h3 className="font-semibold" style={{ color: COLORS.textPrimary, fontFamily: "'Cairo', sans-serif", fontSize: 15 }}>
+                    تنزيل كشف الأغراض
+                  </h3>
+                  <button type="button" onClick={() => setShowExportModal(false)} aria-label="إغلاق">
+                    <X size={16} style={{ color: COLORS.textMuted }} />
+                  </button>
+                </div>
+
+                <div className="mb-1.5" style={{ color: COLORS.textMuted, fontFamily: "'Cairo', sans-serif", fontSize: 12 }}>
+                  المجال الزمني
+                </div>
+                <DateRangeFields from={exportFrom} to={exportTo} onFrom={setExportFrom} onTo={setExportTo} />
+
+                <div className="mb-1.5" style={{ color: COLORS.textMuted, fontFamily: "'Cairo', sans-serif", fontSize: 12 }}>
+                  الصيغة
+                </div>
+                <div className="flex gap-1.5 mb-4">
+                  {[{ id: 'excel', label: 'إكسل' }, { id: 'pdf', label: 'PDF' }].map((f) => {
+                    const active = exportFormat === f.id;
+                    return (
+                      <button
+                        key={f.id}
+                        type="button"
+                        onClick={() => setExportFormat(f.id)}
+                        className="flex-1 py-2 rounded-xl"
+                        style={{
+                          background: active ? COLORS.gold : 'rgba(255,255,255,0.04)',
+                          color: active ? COLORS.bg : COLORS.textMuted,
+                          border: `1px solid ${active ? COLORS.gold : 'rgba(255,255,255,0.08)'}`,
+                          fontFamily: "'Cairo', sans-serif",
+                          fontSize: 13,
+                          fontWeight: active ? 700 : 400,
+                        }}
+                      >
+                        {f.label}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <div className="mb-1.5" style={{ color: COLORS.textMuted, fontFamily: "'Cairo', sans-serif", fontSize: 12 }}>
+                  لمين
+                </div>
+                <div className="flex flex-wrap gap-1.5 mb-5">
+                  {EXPORT_SCOPES.map((s) => {
+                    const active = exportScope === s.id;
+                    return (
+                      <button
+                        key={s.id}
+                        type="button"
+                        onClick={() => setExportScope(s.id)}
+                        className="px-3 py-1.5 rounded-xl"
+                        style={{
+                          background: active ? COLORS.gold : 'rgba(255,255,255,0.04)',
+                          color: active ? COLORS.bg : COLORS.textMuted,
+                          border: `1px solid ${active ? COLORS.gold : 'rgba(255,255,255,0.08)'}`,
+                          fontFamily: "'Cairo', sans-serif",
+                          fontSize: 12,
+                          fontWeight: active ? 700 : 400,
+                        }}
+                      >
+                        {s.label}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <p className="mb-3" style={{ color: COLORS.textFaint, fontFamily: "'Cairo', sans-serif", fontSize: 11 }}>
+                  رح ينزل كشف {exportRangeLabel}
+                  {exportList.length === 0 ? ` — ما في عناصر بهالمجال` : ` (${exportList.length} غرض)`}
+                </p>
+
+                <button
+                  type="button"
+                  onClick={handleExportConfirm}
+                  disabled={exportList.length === 0}
+                  className="w-full py-3 rounded-xl font-semibold"
+                  style={{
+                    background: COLORS.gold,
+                    color: COLORS.bg,
+                    fontFamily: "'Cairo', sans-serif",
+                    fontSize: 14,
+                    opacity: exportList.length === 0 ? 0.45 : 1,
+                    cursor: exportList.length === 0 ? 'not-allowed' : 'pointer',
+                  }}
+                >
+                  تنزيل
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Reset confirmation modal */}
+          {showResetConfirm && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-5" style={{ background: 'rgba(0,0,0,0.62)' }} onClick={() => setShowResetConfirm(false)}>
+              <div className="w-full max-w-xs rounded-2xl p-5" style={{ background: COLORS.surface, border: '1px solid rgba(201,162,39,0.28)' }} onClick={(e) => e.stopPropagation()}>
+                <div className="flex items-start justify-between mb-3">
+                  <h3 className="font-semibold" style={{ color: COLORS.textPrimary, fontFamily: "'Cairo', sans-serif", fontSize: 15 }}>
+                    تصفير الدورة الحالية؟
+                  </h3>
+                  <button type="button" onClick={() => setShowResetConfirm(false)} aria-label="إغلاق">
+                    <X size={16} style={{ color: COLORS.textMuted }} />
+                  </button>
+                </div>
+                <p className="mb-5" style={{ color: COLORS.textMuted, fontFamily: "'Cairo', sans-serif", fontSize: 13 }}>
+                  رح يتحفظ الناتج (مصاريف {formatAmount(activeExpensesTotal)} {CURRENCY}، إيداعات {formatAmount(totalDeposits)} {CURRENCY}) بقائمة "دورات سابقة"، وتنمسح كل العناصر الحالية. متأكد؟
+                </p>
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setShowResetConfirm(false)}
+                    className="flex-1 py-2.5 rounded-xl"
+                    style={{ background: 'rgba(255,255,255,0.06)', color: COLORS.textPrimary, fontFamily: "'Cairo', sans-serif", fontSize: 13 }}
+                  >
+                    إلغاء
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleReset}
+                    className="flex-1 py-2.5 rounded-xl font-semibold"
+                    style={{ background: COLORS.danger, color: '#fff', fontFamily: "'Cairo', sans-serif", fontSize: 13 }}
+                  >
+                    تصفير
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+      </>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<HouseholdExpenses />);
+window.__appMounted = true;
+</script>
+<script>
+  if ('serviceWorker' in navigator) { window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); }); }
+</script>
+</body>
+</html>
